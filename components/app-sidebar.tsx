@@ -74,7 +74,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       id: session?.user?.id || "user-1",
     },
     logo: {
-      logo:  "/trod.png",
+      logo: "/trod.png",
       name: branding.siteName,
       link: "/dashboard/home"
     },

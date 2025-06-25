@@ -34,7 +34,7 @@ export function CompanyLogo({
   }
 }) {
   const { branding } = useLogoContext();
-  const logoUrl = branding.logoUrl || '/logo.png';
+  const logoUrl = '/trod.png';
   const siteName = branding.siteName || teams.name;
 
   return (
