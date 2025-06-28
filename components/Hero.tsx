@@ -125,7 +125,7 @@ const Hero = () => {
                 <div className="flex gap-2">
                     <div className="flex -space-x-3">
                         <Image src="/azeeem.jpg" width={45} height={45} className="rounded-full" alt="User 2" />
-                        <Image src="/hasnain.jpg" width={45} height={45} className="rounded-full" alt="User 3" />
+                        <Image src="/hasnain.jpeg" width={45} height={45} className="rounded-full" alt="User 3" />
                         <Image src="/azeem.png" width={45} height={45} className="rounded-full" alt="User 1" />
                     </div>
                     <div className="flex flex-col">
