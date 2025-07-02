@@ -1,0 +1,19 @@
+# Railway ignore file - excludes files from build process
+.git/
+.next/
+node_modules/
+*.log
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.DS_Store
+*.tsbuildinfo
+build-log.txt
+temp/
+public/temp/
+*.md
+docs/
+scripts/test-*
+scripts/debug-*
+scripts/simulate-* 
