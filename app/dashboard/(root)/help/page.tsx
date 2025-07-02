@@ -164,7 +164,7 @@ export default function HelpPage() {
               Send us an email for complex issues or feature requests that need deeper attention.
             </p>
             <Link 
-              href="mailto:support@editur.com" 
+              href="mailto:support@trod.com" 
               className="mt-auto bg-purple-100 text-purple-700 hover:bg-purple-200 transition-colors px-6 py-2 rounded-full font-medium"
             >
               Contact Support
@@ -238,7 +238,7 @@ export default function HelpPage() {
               <MessageCircle className="mr-2 h-5 w-5" />
               Start Live Chat
             </button>
-            <Link href="mailto:support@editur.com" className="bg-transparent border border-white text-white hover:bg-white hover:bg-opacity-20 transition-colors px-6 py-2 rounded-full font-medium flex items-center">
+            <Link href="mailto:support@trod.com" className="bg-transparent border border-white text-white hover:bg-white hover:bg-opacity-20 transition-colors px-6 py-2 rounded-full font-medium flex items-center">
               <Mail className="mr-2 h-5 w-5" />
               Email Support
             </Link>

@@ -1,162 +1,134 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { NewApiClip } from "@/types/database";
 
-// POST request handler to create clip records
+// POST request handler to save clips from the new API
 export async function POST(req: NextRequest) {
   try {
+    console.log("=== POST /api/clips - Saving clips from new API ===");
+    
     // Get the user session
     const session = await auth();
 
     // Check if user is authenticated
     if (!session || !session.user) {
+      console.error("Unauthorized access attempt - no valid session");
       return NextResponse.json(
         { error: "Unauthorized access" },
         { status: 401 }
       );
     }
+    
+    console.log("User authenticated:", session.user.id);
 
     // Get data from request body
-    const data = await req.json();
-    const { videoId, clips } = data;
-
-    if (!videoId || !clips || !Array.isArray(clips)) {
+    let data;
+    try {
+      data = await req.json();
+      console.log("Received clips data:", {
+        videoId: data.videoId,
+        processingId: data.processingId,
+        clipsCount: data.clips?.length || 0
+      });
+    } catch (parseError: any) {
+      console.error("Failed to parse request body:", parseError);
       return NextResponse.json(
-        { error: "Missing required fields: videoId and clips array" },
+        { error: "Invalid request body", details: parseError.message },
         { status: 400 }
       );
     }
 
-    // Check if the video exists and belongs to this user
+    // Validate required fields
+    if (!data.videoId || !data.processingId || !data.clips || !Array.isArray(data.clips)) {
+      console.error("Missing required fields or invalid clips array");
+      return NextResponse.json(
+        { error: "Missing required fields: videoId, processingId, and clips array" },
+        { status: 400 }
+      );
+    }
+
+    // Verify that the video exists and belongs to the user
     const video = await prisma.video.findFirst({
-      where: {
-        id: videoId,
+      where: { 
+        id: data.videoId,
         userId: session.user.id
       }
     });
 
     if (!video) {
+      console.error("Video not found or doesn't belong to user:", data.videoId);
       return NextResponse.json(
-        { error: "Video not found or you don't have permission to add clips to it" },
+        { error: "Video not found or access denied" },
         { status: 404 }
       );
     }
 
-    // Track total duration in seconds for updating minutes used
-    let totalDurationSeconds = 0;
+    console.log("Video found, creating clips...");
 
-    // Process each clip and create records
-    const savedClips = await Promise.all(
-      clips.map(async (clip) => {
-        const { videoResult, subtitleResult, wordTimestampsResult } = clip;
+    // Create clips using a transaction
+    const savedClips = await prisma.$transaction(async (tx) => {
+      const clips = [];
+      
+      for (const clipData of data.clips) {
+        console.log(`Creating clip with ID: ${clipData.clip_id}`);
         
-        // Skip if missing video result
-        if (!videoResult) return null;
-
-        // Add clip duration to total
-        const clipDuration = videoResult.metadata.duration || 0;
-        totalDurationSeconds += clipDuration;
-
-        try {
-          return await prisma.clip.create({
+        // Safely convert and map fields with proper type handling
+        const fileSize = clipData.fileSize || clipData.file_size;
+        const previewText = clipData.previewText || clipData.preview_text;
+        const clipId = clipData.clipId || clipData.clip_id;
+        const captionsUrl = clipData.captionsUrl || clipData.captions_url;
+        
+        console.log(`📝 Processing clip data:`, {
+          originalClipId: clipData.clip_id,
+          title: clipData.title || previewText,
+          fileSize: fileSize,
+          fileSizeType: typeof fileSize,
+          url: clipData.url || clipData.download_url
+        });
+        
+                  const clip = await tx.clip.create({
             data: {
-              videoId,
-              title: videoResult.metadata.reason || `Clip from ${video.title}`,
-              url: videoResult.url,
-              startTime: videoResult.metadata.start_time || 0,
-              endTime: videoResult.metadata.end_time || 0,
-              duration: clipDuration,
-              reason: videoResult.metadata.reason,
-              externalId: videoResult.id,
-              externalCreatedAt: new Date(videoResult.created_at),
-              filename: videoResult.metadata.filename,
-              withCaptions: videoResult.metadata.with_captions || false,
-              hasSrt: videoResult.metadata.has_srt || false,
-              hasWordTimestamps: videoResult.metadata.has_word_timestamps || false,
-              
-              // Subtitle information if available
-              subtitleUrl: subtitleResult?.url || null,
-              subtitleId: subtitleResult?.id || null,
-              subtitleFormat: subtitleResult?.metadata?.format || null,
-              
-              // Word timestamp information if available
-              wordTimestampUrl: wordTimestampsResult?.url || null,
-              wordTimestampId: wordTimestampsResult?.id || null,
-              wordTimestampFormat: wordTimestampsResult?.metadata?.format || null
-            }
+              videoId: data.videoId,
+              title: clipData.title || previewText || `Clip ${clipId || 'Unknown'}`,
+              url: clipData.url || clipData.download_url || '',
+              startTime: Number(clipData.startTime || clipData.start_time || 0),
+              endTime: Number(clipData.endTime || clipData.end_time || 0),
+              duration: Number(clipData.duration || 0),
+              filename: clipData.filename || '',
+              // Store processing ID for URL construction (using any cast to work around Prisma generation issue)
+              processingId: data.processingId,
+              // Store additional fields from new API 
+              fileSize: fileSize ? String(fileSize) : null,
+              previewText: previewText || null,
+              clipId: clipId ? String(clipId) : null,
+              // Handle captions URL
+              subtitleUrl: captionsUrl || null,
+              // Set default values for existing fields
+              hasSrt: Boolean(captionsUrl),
+              withCaptions: Boolean(captionsUrl),
+              hasWordTimestamps: false, // New API doesn't provide word timestamps separately
+            } as any // Type cast to work around Prisma client generation issue
           });
-        } catch (clipError) {
-          console.error("Error creating clip:", clipError, "Clip data:", clip);
-          return null;
-        }
-      })
+        
+        clips.push(clip);
+      }
+      
+      return clips;
+    });
+
+    console.log(`Successfully saved ${savedClips.length} clips`);
+
+    return NextResponse.json(
+      { 
+        success: true, 
+        message: "Clips saved successfully", 
+        clips: savedClips,
+        count: savedClips.length
+      },
+      { status: 201 }
     );
 
-    // Filter out any null results from failed clip creations
-    const validClips = savedClips.filter(Boolean);
-
-    // Convert seconds to minutes and update user's subscription minutesUsed
-    if (totalDurationSeconds > 0) {
-      try {
-        // Find user's subscription
-        const subscription = await prisma.subscription.findFirst({
-          where: { userId: session.user.id }
-        });
-
-        if (subscription) {
-          // HYBRID MODEL: Count 90% of input video duration + 10% of output clips duration
-          
-          // Get input video duration in seconds
-          const inputVideoDurationSeconds = video.duration || 0;
-          
-          // Calculate weighted durations (90% input, 10% output)
-          const inputWeightedSeconds = inputVideoDurationSeconds * 0.9;
-          const outputWeightedSeconds = totalDurationSeconds * 0.1;
-          
-          // Total weighted duration in seconds
-          const totalWeightedSeconds = inputWeightedSeconds + outputWeightedSeconds;
-          
-          // Convert seconds to minutes (rounded up to the nearest minute)
-          const weightedMinutes = Math.ceil(totalWeightedSeconds / 60);
-          
-          console.log(`===== HYBRID MODEL MINUTES CALCULATION =====`);
-          console.log(`User ID: ${session.user.id}`);
-          console.log(`Video ID: ${videoId}`);
-          console.log(`Input video duration: ${inputVideoDurationSeconds} seconds`);
-          console.log(`Output clips total duration: ${totalDurationSeconds} seconds`);
-          console.log(`Input weighted (90%): ${inputWeightedSeconds} seconds`);
-          console.log(`Output weighted (10%): ${outputWeightedSeconds} seconds`);
-          console.log(`Total weighted duration: ${totalWeightedSeconds} seconds`);
-          console.log(`Final minutes (rounded up): ${weightedMinutes} minutes`);
-          console.log(`Current minutes used: ${subscription.minutesUsed} minutes`);
-          console.log(`New minutes used will be: ${subscription.minutesUsed + weightedMinutes} minutes`);
-          console.log(`Minutes allowed in plan: ${subscription.minutesAllowed} minutes`);
-          console.log(`=====================================`);
-          
-          // Update the minutesUsed field
-          await prisma.subscription.update({
-            where: { id: subscription.id },
-            data: {
-              minutesUsed: {
-                increment: weightedMinutes
-              }
-            }
-          });
-
-          // Log the update confirmation
-          console.log(`✅ Successfully updated minutes used for user ${session.user.id}`);
-        }
-      } catch (error) {
-        console.error("Error updating subscription minutes:", error);
-        // Don't fail the whole operation if updating minutes fails
-      }
-    }
-
-    return NextResponse.json({
-      success: true,
-      message: `Saved ${validClips.length} of ${clips.length} clips`,
-      clips: validClips
-    });
   } catch (error: any) {
     console.error("Error saving clips:", error);
     return NextResponse.json(
@@ -166,7 +138,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// GET request handler to fetch clips for the current user
+// GET request handler to fetch clips for a user
 export async function GET(req: NextRequest) {
   try {
     // Get the user session
@@ -182,28 +154,27 @@ export async function GET(req: NextRequest) {
 
     // Parse query parameters
     const url = new URL(req.url);
-    const page = parseInt(url.searchParams.get("page") || "1");
-    const limit = parseInt(url.searchParams.get("limit") || "6"); // Default to 6 to match UI
     const videoId = url.searchParams.get("videoId");
+    const page = parseInt(url.searchParams.get("page") || "1");
+    const limit = parseInt(url.searchParams.get("limit") || "20");
 
     // Calculate pagination values
     const skip = (page - 1) * limit;
 
-    // Build the where clause to get clips for this user
-    const where = {
+    // Build the where clause
+    const where: any = {
       video: {
         userId: session.user.id
-      },
-      ...(videoId ? { videoId } : {})
+      }
     };
 
-    // Count total clips
-    const total = await prisma.clip.count({ 
-      where 
-    });
+    // If videoId is provided, filter by specific video
+    if (videoId) {
+      where.videoId = videoId;
+    }
 
-    console.log('Clips count query where clause:', where);
-    console.log('Total clips count:', total);
+    // Count total clips
+    const total = await prisma.clip.count({ where });
 
     // Get clips with pagination
     const clips = await prisma.clip.findMany({
@@ -211,75 +182,36 @@ export async function GET(req: NextRequest) {
       orderBy: {
         createdAt: "desc"
       },
+      skip,
+      take: limit,
       include: {
         video: {
           select: {
+            id: true,
             title: true,
-            description: true
+            externalJobId: true // Include processing ID from video
           }
         }
-      },
-      skip,
-      take: limit
+      }
     });
 
-    console.log('Found clips:', clips.length);
-    console.log('Pagination details:', { total, page, limit, totalPages: Math.ceil(total / limit) });
-
-    // Format clips to match the structure expected by the frontend
-    const formattedClips = clips.map(clip => ({
-      videoResult: {
-        id: clip.externalId || clip.id,
-        url: clip.url,
-        result_type: "video",
-        metadata: {
-          filename: clip.filename || `clip_${clip.id}.mp4`,
-          start_time: clip.startTime || 0,
-          end_time: clip.endTime || 0,
-          duration: clip.duration || 0,
-          with_captions: clip.withCaptions || false,
-          has_srt: clip.hasSrt || false,
-          has_word_timestamps: clip.hasWordTimestamps || false,
-          title: clip.title || `Clip from ${clip.video?.title || "video"}`,
-          reason: clip.reason
-        },
-        created_at: clip.externalCreatedAt?.toISOString() || clip.createdAt.toISOString()
-      },
-      subtitleResult: clip.subtitleUrl ? {
-        id: clip.subtitleId || `subtitle_${clip.id}`,
-        url: clip.subtitleUrl,
-        result_type: "subtitles",
-        metadata: {
-          format: clip.subtitleFormat || "srt",
-          video_filename: clip.filename || `clip_${clip.id}.mp4`
-        },
-        created_at: clip.createdAt.toISOString()
-      } : undefined,
-      wordTimestampsResult: clip.wordTimestampUrl ? {
-        id: clip.wordTimestampId || `word_timestamps_${clip.id}`,
-        url: clip.wordTimestampUrl,
-        result_type: "word_timestamps",
-        metadata: {
-          format: clip.wordTimestampFormat || "json",
-          video_filename: clip.filename || `clip_${clip.id}.mp4`
-        },
-        created_at: clip.createdAt.toISOString()
-      } : undefined
+    // Add processingId to each clip for frontend URL construction
+    const clipsWithProcessingId = clips.map(clip => ({
+      ...clip,
+      // Use processingId from clip if available, otherwise fallback to video's externalJobId
+      processingId: (clip as any).processingId || clip.video?.externalJobId
     }));
 
-    const response = {
-      clips: formattedClips,
+    return NextResponse.json({
+      clips: clipsWithProcessingId,
       pagination: {
         total,
         page,
         limit,
         totalPages: Math.ceil(total / limit)
       }
-    };
+    });
 
-    console.log('Sending response with pagination:', response.pagination);
-
-    return NextResponse.json(response);
   } catch (error: any) {
     console.error("Error fetching clips:", error);
     return NextResponse.json(

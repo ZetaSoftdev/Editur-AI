@@ -1,5 +1,89 @@
 # Project TODO List
 
+## ✅ COMPLETED TASKS
+
+### External API Migration (NEW)
+- [x] Replace old external API (Trod.ai) with new lightweight API
+- [x] Update lib/api.ts with new API endpoints and response handling
+- [x] Add support for aspect ratio selection (9:16, 16:9, 1:1)
+- [x] Add support for number of clips selection (1-10)
+- [x] Update database schema with new fields (aspectRatio, numClipsRequested, fileSize, previewText, clipId)
+- [x] Update HomeSidebar component with new upload UI
+- [x] Update video processing flow to use new API
+- [x] Update clips saving to handle new API response format
+- [x] Add processing status polling with new API endpoints
+- [x] Update video and clips API routes
+- [x] Database migration for new fields completed
+
+### Previously Completed
+- [x] Basic video upload functionality
+- [x] Video processing with external API
+- [x] Clip generation and display
+- [x] User authentication system
+- [x] Subscription management
+- [x] Social media publishing
+- [x] Video editing interface
+- [x] Admin dashboard
+- [x] Stripe integration
+
+## 🚧 IN PROGRESS
+
+### Frontend Improvements
+- [x] **Database saving issues COMPLETELY RESOLVED** - Fixed authentication security flaw where API trusted client userId instead of session
+- [x] **Video upload and saving to database working**
+- [x] **Clips saving API 500 error FIXED** - Fixed field type mismatches and Prisma client issues
+- [x] **Clips saving VERIFIED WORKING** - Test confirmed 3 clips save successfully with all metadata
+- [x] **Edit page parameter mismatch FIXED** - Updated edit page to handle both clipUrl/captionsUrl and videoUrl/wordTimestampsUrl parameters
+- [x] **Home page clips display IMPROVED** - Added database loading for clips and separate display for session vs database clips
+- [x] **Uploaded videos section ADDED** - Created new section showing all uploaded videos from database
+- [x] **External API proxy endpoints CREATED** - Added /api/external/clips and /api/external/captions endpoints
+- [x] **Database schema ENHANCED** - Added processingId field to Clip model for URL construction
+- [x] **CLIPS PAGINATION IMPLEMENTED** - Added scrollable pagination with vertical navigation arrows for shorts section
+- [ ] Update environment variables for new API endpoint  
+- [ ] Test error handling and edge cases
+
+## 📋 PENDING TASKS
+
+### API & Backend
+- [ ] Update edit page VideoPreview component for new clip URLs
+- [ ] Update caption rendering for new captions format
+- [ ] Test API health check functionality
+- [ ] Add API status monitoring
+- [ ] Remove temporary files after task completion
+
+### Environment & Deployment
+- [ ] Update production environment variables
+- [ ] Test deployment with new API
+- [ ] Add API endpoint configuration documentation
+
+### Testing & QA
+- [ ] Test complete upload → processing → clips flow
+- [ ] Test aspect ratio and clip count selection
+- [ ] Test error scenarios (API down, failed processing)
+- [ ] Test clips display and editing
+- [ ] Verify database updates work correctly
+
+### Cleanup
+- [ ] Remove old API integration code references
+- [ ] Clean up unused imports
+- [ ] Update API documentation
+- [ ] Remove temporary test files
+
+## 🎯 NEXT SPRINT PRIORITIES
+
+1. **Complete Edit Page Updates** - Update edit page to work with new API
+2. **Environment Configuration** - Set up new API endpoint
+3. **End-to-End Testing** - Test complete workflow
+4. **Production Deployment** - Deploy with new API integration
+
+## 📝 NOTES
+
+- Database migration completed successfully
+- New API uses simpler endpoints: /api/upload-video, /api/status/{id}, /api/download/clips/{id}/{filename}
+- Removed complexity of old API (multiple result types, separate endpoints)
+- Improved user experience with aspect ratio and clip count selection
+- Better error handling and progress tracking
+
 ## Current Tasks
 
 - [x] Fix subscription success page redirect issue

@@ -81,7 +81,7 @@ export default function SettingsPage() {
   // Updated settings structure with loading state
   const [settings, setSettings] = useState<Settings>({
     branding: {
-      siteName: "Editur",
+      siteName: "Trod AI",
       logo: null,
       favicon: null,
       primaryColor: "#8B5CF6",
@@ -161,7 +161,7 @@ export default function SettingsPage() {
         setSettings(prev => ({
           ...prev,
           branding: {
-            siteName: data.siteName || "Editur",
+            siteName: data.siteName || "Trod AI",
             logo: data.logoUrl || "/branding/logo.png",
             favicon: data.faviconUrl || "/branding/favicon.png",
             primaryColor: data.primaryColor || "#8B5CF6",
@@ -306,7 +306,7 @@ export default function SettingsPage() {
     try {
       // Create default settings
       const defaultSettings = {
-        siteName: "Editur",
+        siteName: "Trod AI",
         primaryColor: "#8B5CF6",
         accentColor: "#F59E0B",
         defaultFont: "Poppins"
@@ -481,7 +481,7 @@ export default function SettingsPage() {
           const apiSettings = data.settings;
           setSettings({
             branding: {
-              siteName: apiSettings.branding?.siteName || "Editur",
+              siteName: apiSettings.branding?.siteName || "Trod AI",
               logo: apiSettings.branding?.logoUrl || null,
               favicon: apiSettings.branding?.faviconUrl || null,
               primaryColor: apiSettings.branding?.primaryColor || "#8B5CF6",

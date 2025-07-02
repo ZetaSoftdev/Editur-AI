@@ -18,7 +18,7 @@ const createPrismaMock = () => {
               console.warn('Prisma browser mock: Returning default branding settings');
               return Promise.resolve({
                 id: 'mock-id',
-                siteName: "Editur",
+                siteName: "Trod AI",
                 logoUrl: "/branding/logo.png",
                 faviconUrl: "/branding/favicon.png",
                 primaryColor: "#8B5CF6",

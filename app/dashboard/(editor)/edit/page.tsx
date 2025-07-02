@@ -38,8 +38,9 @@ interface WordTimestamps {
 // Create a client component that uses searchParams
 function VideoEditorContent() {
   const searchParams = useSearchParams();
-  const videoUrl = searchParams.get("videoUrl");
-  const wordTimestampsUrl = searchParams.get("wordTimestampsUrl");
+  // Support both old and new parameter names for compatibility
+  const videoUrl = searchParams.get("videoUrl") || searchParams.get("clipUrl");
+  const wordTimestampsUrl = searchParams.get("wordTimestampsUrl") || searchParams.get("captionsUrl");
   const videoName = searchParams.get("videoName");
 
   const [videoSrc, setVideoSrc] = useState<string>("");

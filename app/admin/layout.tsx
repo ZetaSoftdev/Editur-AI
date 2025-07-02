@@ -44,7 +44,7 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const [brandingSettings, setBrandingSettings] = useState<BrandingSettings>({
-    siteName: "Editur",
+    siteName: "Trod AI",
     logoUrl: "/branding/logo.png",
     faviconUrl: null,
     primaryColor: "#8B5CF6",
@@ -98,7 +98,7 @@ export default function AdminLayout({
         
         const data = await response.json();
         setBrandingSettings({
-          siteName: data.siteName || "Editur",
+          siteName: data.siteName || "Trod AI",
           logoUrl: data.logoUrl || "/branding/logo.png",
           faviconUrl: data.faviconUrl || null,
           primaryColor: data.primaryColor || "#8B5CF6",

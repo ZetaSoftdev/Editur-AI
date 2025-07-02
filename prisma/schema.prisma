@@ -79,6 +79,8 @@ model Video {
   error           String?
   externalJobId   String?
   lastStatusCheck DateTime?
+  aspectRatio     String?   // New field for aspect ratio (9:16, 16:9, 1:1)
+  numClipsRequested Int?    // New field for number of clips requested
   clips           Clip[]
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -95,6 +97,10 @@ model Clip {
   externalCreatedAt   DateTime?
   externalId          String?
   filename            String
+  fileSize            String?   // New field for file size from API
+  previewText         String?   // New field for preview text from API
+  clipId              String?   // New field for clip ID from API
+  processingId        String?   // New field for external API processing ID
   hasSrt              Boolean   @default(false)
   hasWordTimestamps   Boolean   @default(false)
   reason              String?

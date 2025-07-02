@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { VideoWithExternalFields } from "@/types/database";
+import { VideoWithExternalFields, ProcessingStatusResponse } from "@/types/database";
 
 // POST request handler to create a new video record
 export async function POST(req: NextRequest) {
@@ -31,7 +31,9 @@ export async function POST(req: NextRequest) {
         fileSize: data.fileSize,
         duration: data.duration,
         status: data.status,
-        externalJobId: data.externalJobId
+        externalJobId: data.externalJobId,
+        aspectRatio: data.aspectRatio,
+        numClipsRequested: data.numClipsRequested
       });
     } catch (parseError: any) {
       console.error("Failed to parse request body:", parseError);
@@ -53,9 +55,9 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Use the userId from the data or fallback to the session user id
-    const userId = data.userId || session.user.id;
-    console.log("Using user ID:", userId);
+    // Always use the authenticated session user ID for security
+    const userId = session.user.id;
+    console.log("Using authenticated user ID:", userId);
 
     // Verify that the user exists and get subscription information
     let user;
@@ -82,12 +84,12 @@ export async function POST(req: NextRequest) {
     
     console.log("User found, subscription status:", user.subscription?.status || "no subscription");
 
-    // Create the video record in the database using a transaction to ensure both operations complete
+    // Create the video record in the database using a transaction
     let video;
     try {
       console.log("Starting database transaction to save video");
       video = await prisma.$transaction(async (tx) => {
-        // Create video record
+        // Create video record with new fields
         console.log("Creating video record");
         const newVideo = await tx.video.create({
           data: {
@@ -99,8 +101,11 @@ export async function POST(req: NextRequest) {
             fileSize: data.fileSize,
             status: data.status,
             uploadPath: data.uploadPath,
-            // Add the external job ID if provided
+            // Store processing_id from new API
             externalJobId: data.externalJobId as string | undefined,
+            // Add new fields for aspect ratio and clip count
+            aspectRatio: data.aspectRatio as string | undefined,
+            numClipsRequested: data.numClipsRequested as number | undefined,
             // Add the initial status check timestamp
             lastStatusCheck: new Date() as any
           }
@@ -182,7 +187,6 @@ export async function GET(req: NextRequest) {
     const limit = parseInt(url.searchParams.get("limit") || "10");
     const status = url.searchParams.get("status");
     const skipStatusCheck = url.searchParams.get("skipStatusCheck") === "true";
-    const forceSkipExternalCheck = url.searchParams.get("forceSkipExternalCheck") === "true" || false;
 
     // Calculate pagination values
     const skip = (page - 1) * limit;
@@ -209,8 +213,8 @@ export async function GET(req: NextRequest) {
     // Cast videos to our custom type for TypeScript compatibility
     const videosWithExternalFields = videos as unknown as VideoWithExternalFields[];
 
-    // Check for processing videos and update status if needed
-    if (!skipStatusCheck && !forceSkipExternalCheck) {
+    // Check for processing videos and update status if needed (with new API)
+    if (!skipStatusCheck) {
       try {
         const processingVideos = videosWithExternalFields.filter(
           (video) => video.status === "processing" && video.externalJobId
@@ -227,118 +231,59 @@ export async function GET(req: NextRequest) {
             await prisma.video.update({
               where: { id: video.id },
               data: { 
-                // Use any to bypass TypeScript error until prisma generate works
                 lastStatusCheck: new Date() as any
               }
             });
 
-            // Get API endpoint from environment or use default
-            const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || 'https://api.editur.ai/api/v1';
+            // Get API endpoint from environment
+            const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://localhost:8000';
             
-            // Check job status
-            const response = await fetch(`${API_ENDPOINT}/jobs/${video.externalJobId}`, {
+            // Check job status with new API
+            const response = await fetch(`${API_ENDPOINT}/api/status/${video.externalJobId}`, {
               method: 'GET',
               headers: {
-                'Content-Type': 'application/json',
-                'X-API-Key': process.env.API_KEY || 'test-key-123'
+                'Content-Type': 'application/json'
               },
               // Add timeout to prevent long waiting periods
               signal: AbortSignal.timeout(10000) // 10 second timeout
             });
 
             if (response.ok) {
-              const statusData = await response.json();
+              const statusData: ProcessingStatusResponse = await response.json();
               
               if (statusData.status === "completed") {
-                // Get job details
-                const detailsResponse = await fetch(`${API_ENDPOINT}/jobs/${video.externalJobId}/details`, {
-                  method: 'GET',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'X-API-Key': process.env.API_KEY || 'test-key-123'
-                  },
-                  // Add timeout to prevent long waiting periods
-                  signal: AbortSignal.timeout(10000) // 10 second timeout
+                // Update video status
+                await prisma.video.update({
+                  where: { id: video.id },
+                  data: {
+                    status: "completed",
+                    processedAt: new Date()
+                  }
                 });
 
-                if (detailsResponse.ok) {
-                  const detailsData = await detailsResponse.json();
-                  
-                  // Update video status
-                  await prisma.video.update({
-                    where: { id: video.id },
-                    data: {
-                      status: "completed",
-                      processedAt: new Date()
+                // Save clips to database if there are results
+                if (statusData.clips && statusData.clips.length > 0) {
+                  // Save clips using transaction
+                  await prisma.$transaction(async (tx) => {
+                    for (const clip of statusData.clips!) {
+                      await tx.clip.create({
+                        data: {
+                          videoId: video.id,
+                          title: clip.preview_text || `Clip ${clip.clip_id}`,
+                          url: clip.download_url,
+                          startTime: clip.start_time,
+                          endTime: clip.end_time,
+                          duration: clip.duration,
+                          filename: clip.filename,
+                          fileSize: clip.file_size,
+                          // Add new fields for captions
+                          subtitleUrl: clip.captions_url,
+                          clipId: clip.clip_id.toString(),
+                          previewText: clip.preview_text
+                        }
+                      });
                     }
                   });
-
-                  // Save clips to database if there are results
-                  if (detailsData.results && detailsData.results.length > 0) {
-                    // Process video results
-                    const videoResults = detailsData.results.filter(
-                      (result: any) => result.result_type === "video"
-                    );
-                    
-                    const subtitleResults = detailsData.results.filter(
-                      (result: any) => result.result_type === "subtitles"
-                    );
-                    
-                    const wordTimestampResults = detailsData.results.filter(
-                      (result: any) => result.result_type === "word_timestamps"
-                    );
-
-                    // Group related items together
-                    const processedClips = videoResults.map((videoResult: any) => {
-                      const videoFilename = videoResult.metadata.filename;
-
-                      // Find matching subtitle and word timestamp files
-                      const subtitleResult = subtitleResults.find(
-                        (s: any) => s.metadata.video_filename === videoFilename
-                      );
-
-                      const wordTimestampsResult = wordTimestampResults.find(
-                        (w: any) => w.metadata.video_filename === videoFilename
-                      );
-
-                      return {
-                        videoResult,
-                        subtitleResult,
-                        wordTimestampsResult
-                      };
-                    });
-
-                    // Save clips
-                    await prisma.$transaction(async (tx) => {
-                      for (const clip of processedClips) {
-                        if (clip.videoResult) {
-                          await tx.clip.create({
-                            data: {
-                              videoId: video.id,
-                              title: clip.videoResult.metadata.title || "Untitled Clip",
-                              url: clip.videoResult.url,
-                              startTime: clip.videoResult.metadata.start_time,
-                              endTime: clip.videoResult.metadata.end_time,
-                              duration: clip.videoResult.metadata.duration,
-                              reason: clip.videoResult.metadata.reason,
-                              filename: clip.videoResult.metadata.filename,
-                              withCaptions: clip.videoResult.metadata.with_captions || false,
-                              hasSrt: clip.videoResult.metadata.has_srt || false,
-                              hasWordTimestamps: clip.videoResult.metadata.has_word_timestamps || false,
-                              // Add subtitle info if available
-                              subtitleUrl: clip.subtitleResult?.url,
-                              subtitleId: clip.subtitleResult?.id,
-                              subtitleFormat: clip.subtitleResult?.metadata.format,
-                              // Add word timestamp info if available
-                              wordTimestampUrl: clip.wordTimestampsResult?.url,
-                              wordTimestampId: clip.wordTimestampsResult?.id,
-                              wordTimestampFormat: clip.wordTimestampsResult?.metadata.format
-                            }
-                          });
-                        }
-                      }
-                    });
-                  }
                 }
               } else if (statusData.status === "failed") {
                 // Update video with error status
@@ -354,16 +299,11 @@ export async function GET(req: NextRequest) {
           } catch (error: any) {
             console.error(`Error checking status for video ${video.id}:`, error);
             
-            // If the error is about disk space or a timeout, mark all API checks as skipped
-            if (error.message?.includes("No space left on device") || 
-                error.message?.includes("timed out") ||
-                error.name === "AbortError") {
-              // Exit the loop and don't try to check more videos when the API is down
-              console.error("External API appears to be down or unavailable - skipping further checks");
-              // Don't update the status, just skip checking for now
+            // If the error is a timeout or API down, skip further checks
+            if (error.message?.includes("timed out") || error.name === "AbortError") {
+              console.error("External API appears to be down - skipping further checks");
               break;
             }
-            // Don't update status on connection error - will try again next time
           }
         }
 
@@ -394,7 +334,6 @@ export async function GET(req: NextRequest) {
       } catch (apiCheckError: any) {
         console.error("Error during external API check:", apiCheckError);
         // Don't fail the entire request if the API check fails
-        // Just return videos without checking external status
       }
     }
 
@@ -407,7 +346,7 @@ export async function GET(req: NextRequest) {
         limit,
         totalPages: Math.ceil(total / limit)
       },
-      externalApiStatus: forceSkipExternalCheck ? "skipped" : "checked"
+      externalApiStatus: skipStatusCheck ? "skipped" : "checked"
     });
   } catch (error: any) {
     console.error("Error fetching videos:", error);
