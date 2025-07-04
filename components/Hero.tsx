@@ -80,7 +80,7 @@ const Hero = () => {
                 transition={{ duration: 1, delay: 0.4 }}
                 className="mt-4 text-2xl font-medium text-gray-300 max-w-2xl"
             >
-                It&apos;s like having a personal video {branding.siteName} Cut, Edit, & Post on{" "}
+                It&apos;s like having a personal video editor Cut, Edit, & Post on{" "}
                 <span className="font-bold text-white">10+ social platforms</span> with{" "}
                 <span className="font-bold text-white">22 other features</span> that make
                 you money while you sleep.
