@@ -1,0 +1,62 @@
+clone the repository
+git clone <repository-url>
+cd <repository-name>
+open the repository in vscode
+code .
+install the dependencies
+npm install
+
+create a new database in postgres
+run the following command to create a new database
+npx prisma migrate dev --name init
+
+run the following command to generate the prisma client
+npx prisma generate
+run the following command to start the server
+npm run dev
+to check the database
+npx prisma studio
+
+
+Basic Git Branch Commands
+✅ 1. Create a New Branch
+git checkout -b branch-name
+Creates and switches to a new branch.
+
+✅ 2. Switch Between Branches
+git checkout branch-name
+Switch to an existing branch.
+
+✅ 3. Check All Branches
+git branch         # local branches
+git branch -r      # remote branches
+git branch -a      # all (local + remote)
+
+✅ 4. Pull Latest Changes in Current Branch
+git pull origin branch-name
+
+✅ 5. Merge Another Branch into Your Current Branch
+Merge changes from feature-branch into main:
+
+git checkout main
+git pull origin main          # make sure it's updated
+git merge feature-branch
+git push origin main          # push the merged changes
+✅ 6. Push a New Branch to GitHub
+git push origin branch-name
+
+🧠 Important Concepts
+❓ Do changes in one branch affect others?
+No, changes in one branch (like feature-branch) do not affect the main branch until you merge them.
+
+✅ Safe:
+
+You can make any changes in a separate branch.
+
+The main branch will remain unaffected.
+
+Deployment from main will only include code that exists in main.
+
+🚫 Not Safe:
+
+If you merge the feature branch into main without testing, then it affects the main project and deployment.
