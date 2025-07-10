@@ -242,11 +242,11 @@ export default function HomeSidebar() {
         uploadedVideo.status === "uploading",
     });
 
-  const handleChange = (field, value) => {
+  const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (
       formData.description.length < 100 ||
@@ -469,7 +469,7 @@ export default function HomeSidebar() {
           clearInterval(pollInterval);
           setJobProgress(100);
           setUploadStatus("Processing completed!");
-
+          
           // Save clips to database
           if (statusData.clips && statusData.clips.length > 0) {
             // Transform clips for database
@@ -564,6 +564,7 @@ export default function HomeSidebar() {
             description: `Generated ${statusData.total_clips} clips successfully!`,
             variant: "default",
           });
+
         } else if (statusData.status === "failed") {
           clearInterval(pollInterval);
           setUploadedVideo((prev) => ({
