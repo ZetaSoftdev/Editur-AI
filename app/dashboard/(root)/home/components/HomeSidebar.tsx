@@ -14,7 +14,7 @@ import {
   ChevronRight,
   Download,
   Edit2,
-  Settings
+  Settings,
 } from "lucide-react";
 import { GrSchedule } from "react-icons/gr";
 import HomeHeader from "@/components/HomeHeader";
@@ -23,7 +23,12 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Role } from "@/lib/constants";
 import { toast } from "@/hooks/use-toast";
-import { VideoWithExternalFields, ProcessingStatusResponse, UploadResponse, NewApiClip } from "@/types/database";
+import {
+  VideoWithExternalFields,
+  ProcessingStatusResponse,
+  UploadResponse,
+  NewApiClip,
+} from "@/types/database";
 import {
   getClipUrl,
   getCaptionsUrl,
@@ -32,11 +37,12 @@ import {
   cancelJob,
   saveVideoToDatabase,
   saveClipsToDatabase,
-  checkApiHealth
+  checkApiHealth,
 } from "@/lib/api";
 import { MdPublish } from "react-icons/md";
 import { useSession } from "next-auth/react";
 import ClipsPagination from "@/components/dashboard/ClipsPagination";
+import { Description } from "@radix-ui/react-toast";
 
 // API endpoint from environment variable
 const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT;
@@ -50,13 +56,13 @@ declare global {
 
 // Helper function to ensure URLs are properly formatted with the API endpoint
 const getFullUrl = (url: string): string => {
-  if (!url) return '';
+  if (!url) return "";
   // If the URL already starts with http:// or https://, return it as is
-  if (url.startsWith('http://') || url.startsWith('https://')) {
+  if (url.startsWith("http://") || url.startsWith("https://")) {
     return url;
   }
   // For other relative paths, just append to API_ENDPOINT
-  return `${API_ENDPOINT}/${url.startsWith('/') ? url.substring(1) : url}`;
+  return `${API_ENDPOINT}/${url.startsWith("/") ? url.substring(1) : url}`;
 };
 
 // Interface for processed clips from new API
@@ -81,7 +87,7 @@ interface ImportedVideo {
 export default function HomeSidebar() {
   const router = useRouter();
   const { data: session } = useSession();
-  
+
   // File upload states
   const [uploadedVideo, setUploadedVideo] = useState<{
     file: File | null;
@@ -98,13 +104,24 @@ export default function HomeSidebar() {
     name: "",
     size: 0,
     progress: 0,
-    error: null
+    error: null,
   });
 
   // New upload settings states
   const [numClips, setNumClips] = useState<number>(3);
   const [aspectRatio, setAspectRatio] = useState<string>("9:16");
   const [showUploadSettings, setShowUploadSettings] = useState<boolean>(false);
+  const [showFacelessVideos, setShowFacelessVideos] = useState<boolean>(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    content: "",
+    category: "Love",
+    style: "cinematic",
+    voice: "echo",
+  });
+  const [errorDis, setErrorDis] = useState("");
+  const [errorContent, setErrorContent] = useState("");
 
   // Processing states
   const [jobId, setJobId] = useState<string>("");
@@ -117,21 +134,24 @@ export default function HomeSidebar() {
   // Clips and videos states
   const [processedClips, setProcessedClips] = useState<ProcessedClipNew[]>([]); // Current session clips
   const [clipsList, setClipsList] = useState<any[]>([]); // Database clips
-  const [uploadedVideosList, setUploadedVideosList] = useState<any[]>([]); // Database uploaded videos  
+  const [uploadedVideosList, setUploadedVideosList] = useState<any[]>([]); // Database uploaded videos
   const [importedVideos, setImportedVideos] = useState<ImportedVideo[]>([]);
   const [editedVideos, setEditedVideos] = useState<any[]>([]);
 
   // UI states
   const [videosOpen, setVideosOpen] = useState<boolean>(false);
   const [isLoadingClips, setIsLoadingClips] = useState<boolean>(false);
-  const [isLoadingUploadedVideos, setIsLoadingUploadedVideos] = useState<boolean>(false);
+  const [isLoadingUploadedVideos, setIsLoadingUploadedVideos] =
+    useState<boolean>(false);
   const [isLoadingImported, setIsLoadingImported] = useState<boolean>(false);
-  const [isLoadingEditedVideos, setIsLoadingEditedVideos] = useState<boolean>(false);
+  const [isLoadingEditedVideos, setIsLoadingEditedVideos] =
+    useState<boolean>(false);
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [currentImportedPage, setCurrentImportedPage] = useState<number>(1);
-  const [currentEditedVideoPage, setCurrentEditedVideoPage] = useState<number>(1);
+  const [currentEditedVideoPage, setCurrentEditedVideoPage] =
+    useState<number>(1);
   const [totalImportedPages, setTotalImportedPages] = useState<number>(1);
   const clipsPerPage = 6;
 
@@ -142,9 +162,21 @@ export default function HomeSidebar() {
 
   // Aspect ratio options
   const aspectRatioOptions = [
-    { value: "9:16", label: "9:16 (Vertical/Stories)", description: "TikTok, Instagram Stories, YouTube Shorts" },
-    { value: "16:9", label: "16:9 (Landscape)", description: "YouTube, Facebook, LinkedIn" },
-    { value: "1:1", label: "1:1 (Square)", description: "Instagram Posts, Facebook Posts" }
+    {
+      value: "9:16",
+      label: "9:16 (Vertical/Stories)",
+      description: "TikTok, Instagram Stories, YouTube Shorts",
+    },
+    {
+      value: "16:9",
+      label: "16:9 (Landscape)",
+      description: "YouTube, Facebook, LinkedIn",
+    },
+    {
+      value: "1:1",
+      label: "1:1 (Square)",
+      description: "Instagram Posts, Facebook Posts",
+    },
   ];
 
   // Number of clips options
@@ -155,61 +187,126 @@ export default function HomeSidebar() {
     {
       label: "Long to Short",
       image: (
-        <img 
-          src="/video_to_short.webp" 
-          alt="Video to Short" 
+        <img
+          src="/video_to_short.webp"
+          alt="Video to Short"
           className="w-32 h-24 object-cover mx-auto mb-2"
         />
       ),
       onClickHandler: () => {
         setShowUploadSettings(true);
-      }
+      },
     },
     {
       label: "Short to Short",
       image: (
-        <img 
-          src="/short_to_short.webp" 
-          alt="Short to Short" 
+        <img
+          src="/short_to_short.webp"
+          alt="Short to Short"
           className="w-32 h-24 object-cover mx-auto mb-2"
         />
       ),
       onClickHandler: () => {
         setShowUploadSettings(true);
-      }
+      },
     },
     {
       label: "Faceless (Beta)",
       image: (
-        <img 
-          src="/faceless.webp" 
-          alt="Faceless" 
+        <img
+          src="/faceless.webp"
+          alt="Faceless"
           className="w-32 h-24 object-cover mx-auto mb-2"
         />
       ),
       onClickHandler: () => {
-        toast({
-          title: "Coming Soon",
-          description: "Faceless video generation is coming soon!",
-          variant: "default",
-        });
-      }
-    }
+        setShowFacelessVideos(true);
+      },
+    },
   ];
 
   // Dropzone configuration
-  const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({
-    onDrop: (files) => {
-      if (files.length > 0) {
-        uploadVideo(files[0]);
+  const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
+    useDropzone({
+      onDrop: (files) => {
+        if (files.length > 0) {
+          uploadVideo(files[0]);
+        }
+      },
+      accept: {
+        "video/*": [".mp4", ".mov", ".avi", ".mkv", ".wmv", ".flv", ".webm"],
+      },
+      multiple: false,
+      disabled:
+        uploadedVideo.status === "processing" ||
+        uploadedVideo.status === "uploading",
+    });
+
+  const handleChange = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (
+      formData.description.length < 100 ||
+      formData.description.length > 150 ||
+      formData.content.length < 200
+    ) {
+      if (formData.content.length < 200) {
+        setErrorContent("Story content must be at least 200 characters.");
       }
-    },
-    accept: {
-      'video/*': ['.mp4', '.mov', '.avi', '.mkv', '.wmv', '.flv', '.webm']
-    },
-    multiple: false,
-    disabled: uploadedVideo.status === "processing" || uploadedVideo.status === "uploading"
-  });
+      if (
+        formData.description.length < 100 ||
+        formData.description.length > 150
+      ) {
+        setErrorDis("Story description must me 100-150 characters.");
+      }
+
+      return;
+    } else {
+      console.log("📋 Submitted Data:", formData);
+      toast({
+        title: "Content submit",
+        description: "Wait for genrate video your request take time!",
+        variant: "default",
+      });
+      setErrorDis(" ");
+      setErrorContent(" ");
+      setShowFacelessVideos(false);
+      setFormData({
+        title: "",
+        description: "",
+        content: "",
+        category: "Love",
+        style: "cinematic",
+        voice: "echo",
+      });
+    }
+  };
+  const categories = [
+    "Scary",
+    "Mystery",
+    "Bedtime",
+    "Interesting History",
+    "Urban Legends",
+    "Motivational",
+    "Fun Facts",
+    "Long Form Jokes",
+    "Life Pro Tips",
+    "Philosophy",
+    "Love",
+    "Custom (Generic)",
+  ];
+
+  const styles = [
+    "photorealistic",
+    "cinematic",
+    "anime",
+    "comic-book",
+    "pixar-art",
+  ];
+  const voices = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"];
 
   // Video upload function with new API
   const uploadVideo = async (file: File) => {
@@ -233,10 +330,10 @@ export default function HomeSidebar() {
         name: file.name,
         size: file.size,
         progress: 0,
-        error: null
+        error: null,
       });
       setVideosOpen(true);
-      
+
       // Reset video ID for new upload
       setVideoId("");
       videoIdRef.current = ""; // Also reset ref
@@ -244,8 +341,8 @@ export default function HomeSidebar() {
       // Get exact video duration
       const getExactVideoDuration = (videoFile: File): Promise<number> => {
         return new Promise((resolve) => {
-          const video = document.createElement('video');
-          video.preload = 'metadata';
+          const video = document.createElement("video");
+          video.preload = "metadata";
           video.onloadedmetadata = () => {
             window.URL.revokeObjectURL(video.src);
             resolve(video.duration);
@@ -261,8 +358,12 @@ export default function HomeSidebar() {
       setUploadStatus("Uploading video for processing...");
 
       // Create processing job with new API
-      const jobResponse = await createVideoProcessingJob(file, numClips, aspectRatio);
-      
+      const jobResponse = await createVideoProcessingJob(
+        file,
+        numClips,
+        aspectRatio
+      );
+
       if (!jobResponse.ok) {
         throw new Error(`Upload failed: ${jobResponse.status}`);
       }
@@ -286,14 +387,22 @@ export default function HomeSidebar() {
 
       if (!dbResponse.ok) {
         const errorData = await dbResponse.json();
-        console.error("Failed to save to database:", dbResponse.status, errorData);
-        throw new Error(`Failed to save video to database: ${errorData.error || 'Unknown error'}`);
+        console.error(
+          "Failed to save to database:",
+          dbResponse.status,
+          errorData
+        );
+        throw new Error(
+          `Failed to save video to database: ${
+            errorData.error || "Unknown error"
+          }`
+        );
       }
 
       // Get the created video ID from the response
       const dbResult = await dbResponse.json();
       console.log("📊 Full database response:", dbResult);
-      
+
       if (dbResult.success && dbResult.video?.id) {
         const capturedVideoId = dbResult.video.id;
         setVideoId(capturedVideoId);
@@ -306,27 +415,26 @@ export default function HomeSidebar() {
           success: dbResult.success,
           hasVideo: !!dbResult.video,
           videoId: dbResult.video?.id,
-          fullVideo: dbResult.video
+          fullVideo: dbResult.video,
         });
         throw new Error("Database response missing video ID");
       }
 
-      setUploadedVideo(prev => ({
+      setUploadedVideo((prev) => ({
         ...prev,
-        status: "processing"
+        status: "processing",
       }));
 
       // Start polling for status
       startStatusPolling(uploadResult.processing_id);
-
     } catch (error: any) {
       console.error("Upload error:", error);
-      setUploadedVideo(prev => ({
+      setUploadedVideo((prev) => ({
         ...prev,
         status: "error",
-        error: error.message
+        error: error.message,
       }));
-      
+
       toast({
         title: "Upload Failed",
         description: error.message,
@@ -340,18 +448,19 @@ export default function HomeSidebar() {
     const pollInterval = setInterval(async () => {
       try {
         const statusResponse = await getJobStatus(processingId);
-        
+
         if (!statusResponse.ok) {
           console.error("Status check failed");
           return;
         }
 
-        const statusData: ProcessingStatusResponse = await statusResponse.json();
+        const statusData: ProcessingStatusResponse =
+          await statusResponse.json();
         console.log("Status data:", statusData);
 
         setJobProgress(statusData.progress);
         setCurrentStep(statusData.current_step);
-        
+
         if (statusData.estimated_remaining) {
           setEstimatedTime(statusData.estimated_remaining);
         }
@@ -360,45 +469,52 @@ export default function HomeSidebar() {
           clearInterval(pollInterval);
           setJobProgress(100);
           setUploadStatus("Processing completed!");
-          
+
           // Save clips to database
           if (statusData.clips && statusData.clips.length > 0) {
             // Transform clips for database
-            const transformedClips = statusData.clips.map(clip => ({
+            const transformedClips = statusData.clips.map((clip) => ({
               clipResult: clip,
-              processingId: processingId
+              processingId: processingId,
             }));
-            
+
             setProcessedClips(transformedClips);
-            
+
             // Save to database - use the actual video ID from ref (latest value)
             const currentVideoId = videoIdRef.current;
-            console.log("🔍 Checking videoId for clips saving:", { 
+            console.log("🔍 Checking videoId for clips saving:", {
               videoIdFromState: videoId,
-              videoIdFromRef: currentVideoId, 
+              videoIdFromRef: currentVideoId,
               hasVideoId: !!currentVideoId,
-              videoIdType: typeof currentVideoId
+              videoIdType: typeof currentVideoId,
             });
-            
+
             if (currentVideoId) {
               try {
                 console.log("📝 Saving clips to database:", {
                   videoId: currentVideoId,
                   processingId,
                   clipsCount: statusData.clips.length,
-                  clips: statusData.clips.map(c => ({ 
-                    clipId: c.clip_id, 
-                    filename: c.filename, 
-                    previewText: c.preview_text 
-                  }))
+                  clips: statusData.clips.map((c) => ({
+                    clipId: c.clip_id,
+                    filename: c.filename,
+                    previewText: c.preview_text,
+                  })),
                 });
-                
-                const clipsResponse = await saveClipsToDatabase(currentVideoId, processingId, statusData.clips);
-                
+
+                const clipsResponse = await saveClipsToDatabase(
+                  currentVideoId,
+                  processingId,
+                  statusData.clips
+                );
+
                 if (clipsResponse.ok) {
                   const clipsResult = await clipsResponse.json();
-                  console.log("✅ Clips saved to database successfully:", clipsResult);
-                  
+                  console.log(
+                    "✅ Clips saved to database successfully:",
+                    clipsResult
+                  );
+
                   toast({
                     title: "Clips Saved",
                     description: `${statusData.clips.length} clips saved to database!`,
@@ -406,8 +522,11 @@ export default function HomeSidebar() {
                   });
                 } else {
                   const errorData = await clipsResponse.json();
-                  console.error("❌ Failed to save clips to database:", errorData);
-                  
+                  console.error(
+                    "❌ Failed to save clips to database:",
+                    errorData
+                  );
+
                   toast({
                     title: "Clips Save Failed",
                     description: "Failed to save clips to database",
@@ -416,28 +535,28 @@ export default function HomeSidebar() {
                 }
               } catch (clipsError) {
                 console.error("❌ Error saving clips:", clipsError);
-                
+
                 toast({
                   title: "Clips Save Error",
                   description: "Error occurred while saving clips",
                   variant: "destructive",
                 });
               }
-                          } else {
-                console.error("❌ No video ID available to save clips");
-                console.error("❌ VideoId values:", { 
-                  stateValue: videoId, 
-                  refValue: currentVideoId, 
-                  stateType: typeof videoId,
-                  refType: typeof currentVideoId
-                });
-                
-                toast({
-                  title: "Clips Save Failed",
-                  description: "No video ID available to save clips",
-                  variant: "destructive",
-                });
-              }
+            } else {
+              console.error("❌ No video ID available to save clips");
+              console.error("❌ VideoId values:", {
+                stateValue: videoId,
+                refValue: currentVideoId,
+                stateType: typeof videoId,
+                refType: typeof currentVideoId,
+              });
+
+              toast({
+                title: "Clips Save Failed",
+                description: "No video ID available to save clips",
+                variant: "destructive",
+              });
+            }
           }
 
           toast({
@@ -445,22 +564,21 @@ export default function HomeSidebar() {
             description: `Generated ${statusData.total_clips} clips successfully!`,
             variant: "default",
           });
-
         } else if (statusData.status === "failed") {
           clearInterval(pollInterval);
-          setUploadedVideo(prev => ({
+          setUploadedVideo((prev) => ({
             ...prev,
             status: "error",
-            error: statusData.error || "Processing failed"
+            error: statusData.error || "Processing failed",
           }));
 
           toast({
             title: "Processing Failed",
-            description: statusData.error || "An error occurred during processing",
+            description:
+              statusData.error || "An error occurred during processing",
             variant: "destructive",
           });
         }
-
       } catch (error: any) {
         console.error("Status polling error:", error);
       }
@@ -480,15 +598,15 @@ export default function HomeSidebar() {
     if (jobId) {
       try {
         await cancelJob(jobId);
-        
+
         if (pollingIntervalRef.current) {
           clearInterval(pollingIntervalRef.current);
           pollingIntervalRef.current = null;
         }
 
-        setUploadedVideo(prev => ({
+        setUploadedVideo((prev) => ({
           ...prev,
-          status: "cancelled"
+          status: "cancelled",
         }));
 
         toast({
@@ -496,7 +614,6 @@ export default function HomeSidebar() {
           description: "Processing has been cancelled",
           variant: "default",
         });
-
       } catch (error: any) {
         console.error("Cancel error:", error);
         toast({
@@ -513,26 +630,26 @@ export default function HomeSidebar() {
     try {
       setIsLoadingClips(true);
       console.log("📝 Loading clips from database...");
-      
-      const response = await fetch('/api/clips', {
-        method: 'GET',
-        credentials: 'include'
+
+      const response = await fetch("/api/clips", {
+        method: "GET",
+        credentials: "include",
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         console.log("✅ Clips loaded from database:", data);
-        
+
         // Debug individual clips data
         if (data.clips && data.clips.length > 0) {
           console.log("🔍 First clip details:", {
             id: data.clips[0].id,
             filename: data.clips[0].filename,
             processingId: data.clips[0].processingId,
-            videoId: data.clips[0].videoId
+            videoId: data.clips[0].videoId,
           });
         }
-        
+
         setClipsList(data.clips || []);
       } else {
         console.error("❌ Failed to load clips:", response.status);
@@ -544,17 +661,17 @@ export default function HomeSidebar() {
     }
   };
 
-  // Load uploaded videos from database  
+  // Load uploaded videos from database
   const loadUploadedVideosFromDatabase = async () => {
     try {
       setIsLoadingUploadedVideos(true);
       console.log("📝 Loading uploaded videos from database...");
-      
-      const response = await fetch('/api/videos', {
-        method: 'GET',
-        credentials: 'include'
+
+      const response = await fetch("/api/videos", {
+        method: "GET",
+        credentials: "include",
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         console.log("✅ Uploaded videos loaded from database:", data);
@@ -573,14 +690,14 @@ export default function HomeSidebar() {
   const testExternalApi = async () => {
     try {
       console.log("🧪 Testing external API connectivity...");
-      const response = await fetch('/api/external/test', {
-        method: 'GET',
-        credentials: 'include'
+      const response = await fetch("/api/external/test", {
+        method: "GET",
+        credentials: "include",
       });
-      
+
       const data = await response.json();
       console.log("🧪 External API test result:", data);
-      
+
       if (data.success) {
         console.log("✅ External API is accessible");
       } else {
@@ -612,8 +729,8 @@ export default function HomeSidebar() {
       }
     };
 
-    window.addEventListener('focus', handleFocus);
-    return () => window.removeEventListener('focus', handleFocus);
+    window.addEventListener("focus", handleFocus);
+    return () => window.removeEventListener("focus", handleFocus);
   }, [session?.user?.id]);
 
   return (
@@ -623,13 +740,18 @@ export default function HomeSidebar() {
       <main className="p-10 w-full bg-bgWhite">
         <div className="">
           <div className="bg-yellow px-14 py-7 text-center rounded-3xl">
-            <h6 className="text-4xl font-semibold">What do you want to create today?</h6>
-            <p className="text-black font-semibold pt-3 pb-12 mt-2">Import/upload a long-form video and let AI take care of the rest. Or upload an existing Short for AI editing!</p>
+            <h6 className="text-4xl font-semibold">
+              What do you want to create today?
+            </h6>
+            <p className="text-black font-semibold pt-3 pb-12 mt-2">
+              Import/upload a long-form video and let AI take care of the rest.
+              Or upload an existing Short for AI editing!
+            </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mx-auto gap-1 -mt-10 px-0 sm:px-7">
             {createBtns.map((btn, index) => (
-              <div key={index} className="relative text-center overflow-hidden" >
+              <div key={index} className="relative text-center overflow-hidden">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   onClick={btn.onClickHandler}
@@ -668,24 +790,33 @@ export default function HomeSidebar() {
               <div className="space-y-6">
                 {/* Number of Clips Selection */}
                 <div>
-                  <label className="block text-sm font-medium mb-2">Number of Clips</label>
+                  <label className="block text-sm font-medium mb-2">
+                    Number of Clips
+                  </label>
                   <select
                     value={numClips}
                     onChange={(e) => setNumClips(parseInt(e.target.value))}
                     className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   >
-                    {numClipsOptions.map(num => (
-                      <option key={num} value={num}>{num} clip{num > 1 ? 's' : ''}</option>
+                    {numClipsOptions.map((num) => (
+                      <option key={num} value={num}>
+                        {num} clip{num > 1 ? "s" : ""}
+                      </option>
                     ))}
                   </select>
                 </div>
 
                 {/* Aspect Ratio Selection */}
                 <div>
-                  <label className="block text-sm font-medium mb-2">Aspect Ratio</label>
+                  <label className="block text-sm font-medium mb-2">
+                    Aspect Ratio
+                  </label>
                   <div className="space-y-2">
-                    {aspectRatioOptions.map(option => (
-                      <label key={option.value} className="flex items-start space-x-3">
+                    {aspectRatioOptions.map((option) => (
+                      <label
+                        key={option.value}
+                        className="flex items-start space-x-3"
+                      >
                         <input
                           type="radio"
                           name="aspectRatio"
@@ -696,7 +827,9 @@ export default function HomeSidebar() {
                         />
                         <div>
                           <div className="font-medium">{option.label}</div>
-                          <div className="text-sm text-gray-500">{option.description}</div>
+                          <div className="text-sm text-gray-500">
+                            {option.description}
+                          </div>
                         </div>
                       </label>
                     ))}
@@ -709,13 +842,13 @@ export default function HomeSidebar() {
                     onClick={() => {
                       setShowUploadSettings(false);
                       // Trigger file upload
-                      document.getElementById('file-upload')?.click();
+                      document.getElementById("file-upload")?.click();
                     }}
                     className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-4 rounded-lg transition-colors"
                   >
                     Choose Video File
                   </button>
-                  
+
                   {/* Hidden file input */}
                   <input
                     id="file-upload"
@@ -737,13 +870,20 @@ export default function HomeSidebar() {
                   <div
                     {...getRootProps()}
                     className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
-                      isDragActive ? 'border-purple-500 bg-purple-50' : 'border-gray-300 hover:border-purple-400'
+                      isDragActive
+                        ? "border-purple-500 bg-purple-50"
+                        : "border-gray-300 hover:border-purple-400"
                     }`}
                   >
                     <input {...getInputProps()} />
-                    <UploadCloud className="mx-auto mb-2 text-gray-400" size={32} />
+                    <UploadCloud
+                      className="mx-auto mb-2 text-gray-400"
+                      size={32}
+                    />
                     <p className="text-sm text-gray-600">
-                      {isDragActive ? 'Drop the video here' : 'Drag & drop a video here'}
+                      {isDragActive
+                        ? "Drop the video here"
+                        : "Drag & drop a video here"}
                     </p>
                   </div>
                 </div>
@@ -751,7 +891,179 @@ export default function HomeSidebar() {
             </div>
           </div>
         )}
+        {/* {facelessvideo form} */}
+        {showFacelessVideos && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg w-full max-w-lg">
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 border-b border-gray-200">
+                <h3 className="text-lg font-semibold">Custom Story Mode</h3>
+                <button
+                  onClick={() => setShowFacelessVideos(false)}
+                  className="text-gray-500 hover:text-gray-700 p-1"
+                >
+                  <X size={18} />
+                </button>
+              </div>
 
+              {/* Form Content */}
+              <div className="p-4">
+                <div className="space-y-3">
+                  {/* Title */}
+                  <div>
+                    <label className="block font-medium mb-1 text-xs">Story Title</label>
+                    <input
+                      type="text"
+                      value={formData.title}
+                      onChange={(e) => handleChange("title", e.target.value)}
+                      className="w-full p-2 border rounded text-xs"
+                      required
+                    />
+                  </div>
+
+                  {/* Description */}
+                  <div>
+                    <label className="block font-medium mb-1 text-xs">
+                      Short Description (100–150 chars)
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.description}
+                      onChange={(e) =>
+                        handleChange("description", e.target.value)
+                      }
+                      className="w-full p-2 border rounded text-xs"
+                      maxLength={150}
+                      required
+                    />
+                    {errorDis && (
+                      <div className="mt-1 text-xs text-red-600">
+                        {errorDis}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Story Content */}
+                  <div>
+                    <label className="block font-medium mb-1 text-xs">
+                      Story Content
+                    </label>
+                    <textarea
+                      value={formData.content}
+                      onChange={(e) => handleChange("content", e.target.value)}
+                      className="w-full p-2 border rounded text-xs"
+                      rows={3}
+                      minLength={200}
+                      required
+                    />
+                    <div className="text-xs text-gray-500 mt-1 text-right">
+                      {formData.content.length} / 500
+                    </div>
+                    {errorContent && (
+                      <div className="mt-1 text-xs text-red-600">
+                        {errorContent}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Form fields in grid layout */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {/* Category */}
+                    <div>
+                      <label className="block font-medium mb-1 text-xs text-gray-700">
+                        Category
+                      </label>
+                      <select
+                        value={formData.category}
+                        onChange={(e) => handleChange("category", e.target.value)}
+                        className="w-full p-2 border border-gray-300 rounded-md text-xs bg-white hover:border-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors appearance-none cursor-pointer"
+                        style={{
+                          backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+                          backgroundPosition: 'right 0.5rem center',
+                          backgroundRepeat: 'no-repeat',
+                          backgroundSize: '1.5em 1.5em',
+                          paddingRight: '2.5rem'
+                        }}
+                      >
+                        {categories.map((cat) => (
+                          <option 
+                            key={cat} 
+                            value={cat}
+                            className="py-2 px-3 text-xs text-gray-800 bg-white hover:bg-gray-50"
+                          >
+                            {cat}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Style */}
+                    <div>
+                      <label className="block font-medium mb-1 text-xs text-gray-700">Style</label>
+                      <select
+                        value={formData.style}
+                        onChange={(e) => handleChange("style", e.target.value)}
+                        className="w-full p-2 border border-gray-300 rounded-md text-xs bg-white hover:border-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors appearance-none cursor-pointer"
+                        style={{
+                          backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+                          backgroundPosition: 'right 0.5rem center',
+                          backgroundRepeat: 'no-repeat',
+                          backgroundSize: '1.5em 1.5em',
+                          paddingRight: '2.5rem'
+                        }}
+                      >
+                        {styles.map((style) => (
+                          <option 
+                            key={style} 
+                            value={style}
+                            className="py-2 px-3 text-xs text-gray-800 bg-white hover:bg-gray-50"
+                          >
+                            {style.charAt(0).toUpperCase() + style.slice(1).replace('-', ' ')}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Voice */}
+                  <div>
+                    <label className="block font-medium mb-1 text-xs text-gray-700">Voice</label>
+                    <select
+                      value={formData.voice}
+                      onChange={(e) => handleChange("voice", e.target.value)}
+                      className="w-full p-2 border border-gray-300 rounded-md text-xs bg-white hover:border-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors appearance-none cursor-pointer"
+                      style={{
+                        backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+                        backgroundPosition: 'right 0.5rem center',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundSize: '1.5em 1.5em',
+                        paddingRight: '2.5rem'
+                      }}
+                    >
+                      {voices.map((voice) => (
+                        <option 
+                          key={voice} 
+                          value={voice}
+                          className="py-2 px-3 text-xs text-gray-800 bg-white hover:bg-gray-50"
+                        >
+                          {voice.charAt(0).toUpperCase() + voice.slice(1)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Submit Button */}
+                  <button
+                    onClick={handleSubmit}
+                    className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded text-sm font-medium transition-colors mt-4"
+                  >
+                    Submit Story Preferences
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         <hr className="my-6 border-gray-300" />
 
         {/* Processing Status */}
@@ -768,7 +1080,7 @@ export default function HomeSidebar() {
             </div>
             <div className="mb-2">
               <div className="w-full bg-blue-200 rounded-full h-2">
-                <div 
+                <div
                   className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${jobProgress}%` }}
                 ></div>
@@ -788,7 +1100,9 @@ export default function HomeSidebar() {
             <h3 className="font-medium text-red-900 mb-2">Processing Failed</h3>
             <p className="text-sm text-red-700">{uploadedVideo.error}</p>
             <button
-              onClick={() => setUploadedVideo(prev => ({ ...prev, status: "idle" }))}
+              onClick={() =>
+                setUploadedVideo((prev) => ({ ...prev, status: "idle" }))
+              }
               className="mt-2 text-sm text-red-600 hover:text-red-800"
             >
               Try Again
@@ -801,15 +1115,27 @@ export default function HomeSidebar() {
           <div className="flex items-center justify-between mt-4">
             <div>
               <h6 className="text-lg font-medium">My Shorts</h6>
-              <p className="text-sm mt-1">These are clips generated from your uploaded videos.</p>
+              <p className="text-sm mt-1">
+                These are clips generated from your uploaded videos.
+              </p>
             </div>
 
             <div className="flex gap-3">
               <div className="relative">
-                <Search size={18} className="absolute top-2 text-gray-500 left-2" />
-                <input type="text" placeholder="Search" className="w-full p-1 pl-8 border rounded-md" />
+                <Search
+                  size={18}
+                  className="absolute top-2 text-gray-500 left-2"
+                />
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="w-full p-1 pl-8 border rounded-md"
+                />
               </div>
-              <Link href="/dashboard/schedule" className="flex gap-2 items-center border px-3 py-1 rounded-md">
+              <Link
+                href="/dashboard/schedule"
+                className="flex gap-2 items-center border px-3 py-1 rounded-md"
+              >
                 <GrSchedule /> Schedule
               </Link>
             </div>
@@ -821,7 +1147,7 @@ export default function HomeSidebar() {
               <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
               <p className="ml-3 text-gray-700">Loading clips...</p>
             </div>
-          ) : (processedClips.length > 0 || clipsList.length > 0) ? (
+          ) : processedClips.length > 0 || clipsList.length > 0 ? (
             <div className="mt-6">
               <ClipsPagination
                 processedClips={processedClips}
@@ -834,8 +1160,12 @@ export default function HomeSidebar() {
           ) : (
             <div className="text-center py-12 mt-6">
               <UploadCloud className="mx-auto mb-4 text-gray-300" size={48} />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No clips yet</h3>
-              <p className="text-gray-500 mb-4">Upload a video to generate clips automatically</p>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                No clips yet
+              </h3>
+              <p className="text-gray-500 mb-4">
+                Upload a video to generate clips automatically
+              </p>
               <button
                 onClick={() => setShowUploadSettings(true)}
                 className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
@@ -853,7 +1183,9 @@ export default function HomeSidebar() {
           <div className="flex items-center justify-between">
             <div>
               <h6 className="text-lg font-medium">My Videos</h6>
-              <p className="text-sm mt-1">Your uploaded videos that were processed into clips.</p>
+              <p className="text-sm mt-1">
+                Your uploaded videos that were processed into clips.
+              </p>
             </div>
           </div>
 
@@ -866,11 +1198,18 @@ export default function HomeSidebar() {
           ) : uploadedVideosList.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
               {uploadedVideosList.map((video) => (
-                <div key={video.id} className="border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                <div
+                  key={video.id}
+                  className="border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                >
                   <div className="p-4">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
-                        <h3 className="font-medium text-sm mb-1">{video.title || video.originalUrl?.split('/').pop() || 'Untitled Video'}</h3>
+                        <h3 className="font-medium text-sm mb-1">
+                          {video.title ||
+                            video.originalUrl?.split("/").pop() ||
+                            "Untitled Video"}
+                        </h3>
                         <p className="text-xs text-gray-500">
                           {video.aspectRatio && (
                             <span className="inline-block bg-gray-100 px-2 py-1 rounded mr-2">
@@ -884,39 +1223,56 @@ export default function HomeSidebar() {
                           )}
                         </p>
                       </div>
-                      <div className={`text-xs px-2 py-1 rounded ${
-                        video.status === 'completed' ? 'bg-green-100 text-green-700' :
-                        video.status === 'processing' ? 'bg-yellow-100 text-yellow-700' :
-                        video.status === 'failed' ? 'bg-red-100 text-red-700' :
-                        'bg-gray-100 text-gray-700'
-                      }`}>
+                      <div
+                        className={`text-xs px-2 py-1 rounded ${
+                          video.status === "completed"
+                            ? "bg-green-100 text-green-700"
+                            : video.status === "processing"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : video.status === "failed"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-gray-100 text-gray-700"
+                        }`}
+                      >
                         {video.status}
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
                       <span>
-                        {video.fileSize ? `${(video.fileSize / (1024 * 1024)).toFixed(1)} MB` : 'Unknown size'}
+                        {video.fileSize
+                          ? `${(video.fileSize / (1024 * 1024)).toFixed(1)} MB`
+                          : "Unknown size"}
                       </span>
                       <span>
                         {new Date(video.createdAt).toLocaleDateString()}
                       </span>
                     </div>
 
-                    {video.status === 'completed' && (
+                    {video.status === "completed" && (
                       <div className="flex gap-2">
                         <button
                           onClick={() => {
                             // Filter clips for this video
-                            const videoClips = clipsList.filter(clip => clip.videoId === video.id);
+                            const videoClips = clipsList.filter(
+                              (clip) => clip.videoId === video.id
+                            );
                             if (videoClips.length > 0) {
                               // Scroll to clips section
-                              document.querySelector('[data-section="clips"]')?.scrollIntoView({ behavior: 'smooth' });
+                              document
+                                .querySelector('[data-section="clips"]')
+                                ?.scrollIntoView({ behavior: "smooth" });
                             }
                           }}
                           className="flex-1 text-xs bg-purple-100 text-purple-700 px-3 py-2 rounded hover:bg-purple-200 transition-colors"
                         >
-                          View Clips ({clipsList.filter(clip => clip.videoId === video.id).length})
+                          View Clips (
+                          {
+                            clipsList.filter(
+                              (clip) => clip.videoId === video.id
+                            ).length
+                          }
+                          )
                         </button>
                         {video.originalUrl && (
                           <a
@@ -931,7 +1287,7 @@ export default function HomeSidebar() {
                       </div>
                     )}
 
-                    {video.status === 'failed' && video.error && (
+                    {video.status === "failed" && video.error && (
                       <div className="mt-2 p-2 bg-red-50 rounded text-xs text-red-700">
                         {video.error}
                       </div>
@@ -945,14 +1301,19 @@ export default function HomeSidebar() {
               <div className="mx-auto mb-4 w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
                 <UploadCloud className="text-gray-400" size={24} />
               </div>
-              <h3 className="text-sm font-medium text-gray-900 mb-1">No videos uploaded yet</h3>
-              <p className="text-xs text-gray-500">Start by uploading your first video</p>
+              <h3 className="text-sm font-medium text-gray-900 mb-1">
+                No videos uploaded yet
+              </h3>
+              <p className="text-xs text-gray-500">
+                Start by uploading your first video
+              </p>
             </div>
           )}
         </div>
 
         {/* Upload Progress Indicator */}
-        {(uploadedVideo.status === "uploading" || uploadedVideo.status === "processing") && (
+        {(uploadedVideo.status === "uploading" ||
+          uploadedVideo.status === "processing") && (
           <div className="fixed bottom-4 right-4 bg-white border border-gray-300 rounded-lg shadow-lg p-4 max-w-sm">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
@@ -960,7 +1321,7 @@ export default function HomeSidebar() {
                 <p className="text-sm font-medium">{uploadedVideo.name}</p>
                 <p className="text-xs text-gray-500">{uploadStatus}</p>
                 <div className="w-full bg-gray-200 rounded-full h-1 mt-1">
-                  <div 
+                  <div
                     className="bg-purple-600 h-1 rounded-full transition-all duration-300"
                     style={{ width: `${jobProgress}%` }}
                   ></div>
@@ -972,4 +1333,4 @@ export default function HomeSidebar() {
       </main>
     </div>
   );
-} 
+}
