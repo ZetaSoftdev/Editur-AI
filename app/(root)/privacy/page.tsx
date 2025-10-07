@@ -28,7 +28,7 @@ const PrivacyPolicyPage = () => {
             <section className="mb-8">
               <h2 className="text-2xl font-semibold mb-4">1. Introduction</h2>
               <p>
-                Welcome to Trod AI ("we," "our," or "us"). We respect your privacy and are committed to protecting your personal data. 
+                Welcome to Editur AI ("we," "our," or "us"). We respect your privacy and are committed to protecting your personal data. 
                 This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our AI-based video editing service.
               </p>
               <p>

@@ -21,7 +21,7 @@ const Footer = () => {
         <div>
           <Link href="/" className="flex items-center gap-2 mb-4 ">
             <Image 
-              src={branding.logoUrl || "/trod.png"} 
+              src={branding.logoUrl || "/editur.png"} 
               alt={branding.siteName} 
               width={130} 
               height={30} 
@@ -34,19 +34,19 @@ const Footer = () => {
 
           {/* Social Media Icons */}
           <div className="flex gap-4 mt-4">
-            <Link href="https://www.tiktok.com/@trod.ai" target="_blank">
+            <Link href="https://www.tiktok.com/@editur.ai" target="_blank">
               <FaTiktok className="text-2xl hover:text-gray-400" />
             </Link>
-            <Link href="https://x.com/trod_ai" target="_blank">
+            <Link href="https://x.com/editur_ai" target="_blank">
               <FaTwitter className="text-2xl hover:text-gray-400" />
             </Link>
-            <Link href="https://www.instagram.com/trod.ai/" target="_blank">
+            <Link href="https://www.instagram.com/editur.ai/" target="_blank">
               <FaInstagram className="text-2xl hover:text-gray-400" />
             </Link>
-            <Link href="https://www.youtube.com/@trod_ai" target="_blank">
+            <Link href="https://www.youtube.com/@editur_ai" target="_blank">
               <FaYoutube className="text-2xl hover:text-gray-400" />
             </Link>
-            <Link href="https://www.linkedin.com/company/trod.ai/" target="_blank">
+            <Link href="https://www.linkedin.com/company/editur.ai/" target="_blank">
               <FaLinkedin className="text-2xl hover:text-gray-400" />
             </Link>
           </div>

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 // Get API endpoint from environment variable
-const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || 'https://api.trod.ai/api/v1';
+const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || 'https://api.editur.ai/api/v1';
 
 /**
  * Proxy API route to fetch job status from external API

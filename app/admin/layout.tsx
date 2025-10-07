@@ -44,7 +44,7 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const [brandingSettings, setBrandingSettings] = useState<BrandingSettings>({
-    siteName: "Trod AI",
+    siteName: "Editur AI",
     logoUrl: "/branding/logo.png",
     faviconUrl: null,
     primaryColor: "#8B5CF6",
@@ -98,7 +98,7 @@ export default function AdminLayout({
         
         const data = await response.json();
         setBrandingSettings({
-          siteName: data.siteName || "Trod AI",
+          siteName: data.siteName || "Editur AI",
           logoUrl: data.logoUrl || "/branding/logo.png",
           faviconUrl: data.faviconUrl || null,
           primaryColor: data.primaryColor || "#8B5CF6",
@@ -134,7 +134,7 @@ export default function AdminLayout({
             <div className="flex items-center">
               {brandingSettings.logoUrl ? (
                 <Image 
-                  src={"/trod.png"} 
+                  src={"editur.png"} 
                   width={140} 
                   height={40} 
                   alt={brandingSettings.siteName} 

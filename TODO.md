@@ -3,7 +3,7 @@
 ## ✅ COMPLETED TASKS
 
 ### External API Migration (NEW)
-- [x] Replace old external API (Trod.ai) with new lightweight API
+- [x] Replace old external API (Editur.ai) with new lightweight API
 - [x] Update lib/api.ts with new API endpoints and response handling
 - [x] Add support for aspect ratio selection (9:16, 16:9, 1:1)
 - [x] Add support for number of clips selection (1-10)

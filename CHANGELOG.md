@@ -173,7 +173,7 @@ All notable changes to this project will be documented in this file.
 ### 🔄 **MAJOR CHANGES - New Lightweight API Integration**
 
 #### **Replaced Old External API**
-- **REMOVED**: Old trod.ai API integration with complex multi-endpoint structure
+- **REMOVED**: Old editur.ai API integration with complex multi-endpoint structure
 - **ADDED**: New lightweight API with simpler endpoints:
   - `POST /api/upload-video` - Upload and start processing
   - `GET /api/status/{processing_id}` - Check processing status

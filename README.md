@@ -1,6 +1,6 @@
-# Trod.ai
+# Editur.ai
 
-Trod.ai is a video editing web application that allows users to import and edit videos. Currently, the project consists of the frontend implementation, with authentication via Google.
+Editur.ai is a video editing web application that allows users to import and edit videos. Currently, the project consists of the frontend implementation, with authentication via Google.
 
 ## Installation
 

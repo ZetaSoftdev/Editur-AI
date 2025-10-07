@@ -17,15 +17,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Trod",
+  title: "Editur",
   description: "Video editing web application",
 };
 
 // Default branding settings to use during build or when API call fails
 const defaultBrandingSettings = {
-  siteName: 'Trod',
+  siteName: 'Editur',
   faviconUrl: '/branding/favicon.png',
-  logoUrl: '/trod.png',
+  logoUrl: '/editur.png',
   primaryColor: '#8B5CF6',
   accentColor: '#F59E0B',
   defaultFont: 'Poppins'
