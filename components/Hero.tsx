@@ -139,7 +139,7 @@ const Hero = () => {
             {/* ✅ Centered Video with Rounded Borders and Autoplay */}
             <div className="mt-12 flex justify-center">
                 <video
-                    src="/video.mp4"
+                    src="/edituranimate.mp4"
                     autoPlay
                     loop
                     muted

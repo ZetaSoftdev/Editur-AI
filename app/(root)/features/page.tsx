@@ -446,7 +446,7 @@ const FeaturesPage = () => {
           <div className="relative overflow-hidden rounded-2xl border border-purple-500/30 shadow-lg">
             <video
               ref={videoRef}
-              src="/video.mp4"
+              src="/edituranimate.mp4"
               className="w-full h-auto"
               preload="metadata"
               controls

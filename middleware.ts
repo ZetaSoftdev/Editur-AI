@@ -32,7 +32,8 @@ export async function middleware(request: NextRequest) {
     path.startsWith('/logos/') ||
     path.startsWith('/videos/') ||
     path === '/bg.png' ||
-    path === '/video.mp4'
+    path === '/video.mp4' ||
+    path === '/edituranimate.mp4'
   ) {
     return NextResponse.next()
   }
