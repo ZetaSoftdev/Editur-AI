@@ -27,7 +27,7 @@ NEXTAUTH_SECRET=your-random-secret-key
 NEXTAUTH_URL=http://localhost:3000
 ```
 
-### 3. Run the Development Server
+### 3. Run the Dev Server
 
 Start the local development server by running:
 

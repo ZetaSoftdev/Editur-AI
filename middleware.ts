@@ -16,6 +16,7 @@ export async function middleware(request: NextRequest) {
   
   console.log(`[Middleware] Processing request for path: ${path}`);
   
+  
   // Skip middleware for Next.js internals and static assets
   if (
     path.startsWith('/_next') || 

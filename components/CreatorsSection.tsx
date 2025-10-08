@@ -54,7 +54,7 @@ const CreatorsSection = () => {
                 className="mt-20 flex justify-center"
             >
                 <video
-                    src="/creaters.mp4"
+                    src="/edituranimate.mp4"
                     autoPlay
                     loop
                     muted
