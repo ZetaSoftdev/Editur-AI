@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "clean": "rm -rf .next && rm -rf node_modules/.cache",
+    "clean:build": "npm run clean && npm run build"
+  }
+}
