@@ -1,4 +1,5 @@
 "use client";
+// Force cache bust for Railway deployment
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";

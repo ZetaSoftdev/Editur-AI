@@ -15,4 +15,23 @@ public/temp/
 docs/
 scripts/test-*
 scripts/debug-*
-scripts/simulate-* 
+scripts/simulate-*
+
+# Additional cache exclusions to force fresh builds
+.vercel/
+.turbo/
+out/
+build/
+dist/
+coverage/
+.nyc_output/
+.npm/
+.eslintcache
+.yarn/
+.pnp/
+.pnp.js
+.pnp.cjs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log* 
