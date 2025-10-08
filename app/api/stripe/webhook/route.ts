@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { db } from '@/lib/db';
-import { stripe as stripeClient, webhookSecret, initializeStripe } from '@/lib/stripe';
+import { stripe as stripeClient, webhookSecret, initializeStripe, ensureStripe } from '@/lib/stripe';
 import { updateSubscriptionRecords, updateSubscriptionFromInvoice } from '@/lib/stripe-helpers/subscription';
 import { updateSubscriptionRecordsDirect, updateSubscriptionFromInvoiceDirect } from '@/lib/stripe-helpers/subscription-direct';
 import { Role } from '@/lib/constants';
@@ -11,13 +11,21 @@ import { Role } from '@/lib/constants';
 export const runtime = 'nodejs';
 
 // Initialize Stripe with the client we already created
-const stripe = stripeClient;
+let stripe: Stripe;
 
 export async function POST(req: Request) {
   console.log('==== STRIPE WEBHOOK HANDLER STARTED ====');
   try {
     // Initialize Stripe with latest settings from database
     await initializeStripe();
+    
+    // Ensure Stripe is available
+    try {
+      stripe = ensureStripe();
+    } catch (stripeError) {
+      console.error('Stripe is not properly configured:', stripeError);
+      return new NextResponse('Stripe configuration error', { status: 500 });
+    }
     
     const body = await req.text();
     console.log('Webhook body length:', body.length);

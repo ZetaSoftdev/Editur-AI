@@ -8,11 +8,26 @@ const prismaAny = prisma as any;
 let stripeSecretKey = process.env.STRIPE_SECRET_KEY || '';
 let stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
 
-// Create Stripe instance with default or environment values
-export const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: '2023-10-16' as Stripe.LatestApiVersion,
-  typescript: true,
-});
+// Create Stripe instance only if we have a valid API key
+function createStripeInstance(apiKey: string): Stripe | null {
+  if (!apiKey || apiKey.trim() === '') {
+    console.warn('Stripe API key is not available, Stripe instance will not be created');
+    return null;
+  }
+  
+  try {
+    return new Stripe(apiKey, {
+      apiVersion: '2023-10-16' as Stripe.LatestApiVersion,
+      typescript: true,
+    });
+  } catch (error) {
+    console.error('Failed to create Stripe instance:', error);
+    return null;
+  }
+}
+
+// Create initial Stripe instance (may be null)
+export let stripe = createStripeInstance(stripeSecretKey);
 
 export let webhookSecret = stripeWebhookSecret;
 
@@ -30,12 +45,11 @@ export async function initializeStripe() {
         stripeSecretKey = settings.stripeSecretKey;
         
         // Update the Stripe instance with the new key
-        Object.assign(stripe, new Stripe(stripeSecretKey, {
-          apiVersion: '2023-10-16' as Stripe.LatestApiVersion,
-          typescript: true,
-        }));
+        stripe = createStripeInstance(stripeSecretKey);
         
-        console.log('Stripe client initialized with database settings');
+        if (stripe) {
+          console.log('Stripe client initialized with database settings');
+        }
       }
 
       if (settings.stripeWebhookSecret) {
@@ -49,5 +63,16 @@ export async function initializeStripe() {
   }
 }
 
-// Initialize Stripe on import
-initializeStripe().catch(console.error); 
+// Helper function to ensure Stripe is available
+export function ensureStripe(): Stripe {
+  if (!stripe) {
+    throw new Error('Stripe is not initialized. Please check your Stripe configuration.');
+  }
+  return stripe;
+}
+
+// Initialize Stripe on import (but don't fail if it's not available)
+if (typeof window === 'undefined') {
+  // Only initialize during server-side execution, not during build
+  initializeStripe().catch(console.error);
+} 

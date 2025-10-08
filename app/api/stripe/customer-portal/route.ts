@@ -1,21 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import Stripe from "stripe";
-
-// Make sure we have the right Stripe key
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY || "";
-if (!stripeSecretKey) {
-  console.error("STRIPE_SECRET_KEY environment variable is not set");
-}
-
-const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: "2023-10-16" as any,
-});
+import { ensureStripe } from "@/lib/stripe";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
     console.log("=== CUSTOMER PORTAL REQUEST STARTED ===");
+    
+    // Ensure Stripe is available
+    let stripe;
+    try {
+      stripe = ensureStripe();
+    } catch (stripeError) {
+      console.error("Stripe is not properly configured:", stripeError);
+      return NextResponse.json(
+        { error: "Stripe configuration error" },
+        { status: 500 }
+      );
+    }
     
     // Get the authenticated user
     const session = await auth();
