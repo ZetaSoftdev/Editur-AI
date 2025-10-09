@@ -13,8 +13,8 @@ export type BrandingSettings = {
 
 const defaultSettings: BrandingSettings = {
   siteName: "Editur AI",
-  logoUrl: "/branding/logo.png",
-  faviconUrl: "/branding/favicon.png",
+  logoUrl: "/editurLogo.png",
+  faviconUrl: "/editurLogo.png",
   primaryColor: "#8B5CF6",
   accentColor: "#F59E0B",
   defaultFont: "Poppins"

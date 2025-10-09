@@ -21,7 +21,7 @@ const Footer = () => {
         <div>
           <Link href="/" className="flex items-center gap-2 mb-4 ">
             <Image 
-              src={branding.logoUrl || "/editur.png"} 
+              src="/editurLogo.png" 
               alt={branding.siteName} 
               width={130} 
               height={30} 

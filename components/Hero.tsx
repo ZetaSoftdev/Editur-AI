@@ -94,24 +94,23 @@ const Hero = () => {
                 transition={{ duration: 1, delay: 0.6 }}
                 className="mt-8"
             >
-                <Link href={"/sign-up"} className="flex items-center gap-2 bg-yellow px-6 py-3 rounded-2xl text-black font-medium shadow-lg hover:bg-yellow-500">
-                    <div className="flex items-center gap-2">
-                        <div className="p-2 bg-white rounded-full">
+                <Link href={"/sign-up"} className="flex items-center gap-3 bg-yellow px-6 py-4 rounded-2xl text-black font-medium shadow-lg hover:bg-yellow-500 transition-all">
+                    <div className="flex items-center gap-3">
+                        <div className="p-1">
                             <Image 
-                                src={branding.faviconUrl || "/icon.png"} 
-                                width={24} 
-                                height={24} 
+                                src="/editurLogo.png" 
+                                width={28} 
+                                height={28} 
                                 alt={branding.siteName} 
                             />
                         </div>
                         <div className="flex flex-col justify-start items-start">
-                            <span className="font-semibold">{branding.siteName}</span>
-                            <span className="font-light text-sm">Online, 24/7</span>
+                            <span className="font-semibold text-base">{branding.siteName}</span>
+                            <span className="font-light text-sm opacity-80">Online, 24/7</span>
                         </div>
-
                     </div>
-                    <span className="bg-white px-2 py-3 rounded-xl text-sm font-medium">
-                        Start earning. Get video in 1 min
+                    <span className="font-semibold text-base">
+                        Make reels in 1 minute
                     </span>
                 </Link>
             </motion.div>

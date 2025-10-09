@@ -99,7 +99,7 @@ export default function AdminLayout({
         const data = await response.json();
         setBrandingSettings({
           siteName: data.siteName || "Editur AI",
-          logoUrl: data.logoUrl || "/branding/logo.png",
+          logoUrl: data.logoUrl || "/editurLogo.png",
           faviconUrl: data.faviconUrl || null,
           primaryColor: data.primaryColor || "#8B5CF6",
           accentColor: data.accentColor || "#F59E0B",
@@ -134,12 +134,12 @@ export default function AdminLayout({
             <div className="flex items-center">
               {brandingSettings.logoUrl ? (
                 <Image 
-                  src={"editur.png"} 
+                  src="/editurLogo.png" 
                   width={140} 
                   height={40} 
                   alt={brandingSettings.siteName} 
                   className="object-contain h-8"
-                  onError={() => setBrandingSettings(prev => ({...prev, logoUrl: "/branding/logo.png"}))}
+                  onError={() => setBrandingSettings(prev => ({...prev, logoUrl: "/editurLogo.png"}))}
                 />
               ) : (
                 <h2 className="text-xl font-bold" style={{ color: brandingSettings.primaryColor }}>
