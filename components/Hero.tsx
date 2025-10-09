@@ -87,34 +87,6 @@ const Hero = () => {
                 you money while you sleep.
             </motion.p>
 
-            {/* CTA Button */}
-            <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1, delay: 0.6 }}
-                className="mt-8"
-            >
-                <Link href={"/sign-up"} className="flex items-center gap-3 bg-yellow px-6 py-4 rounded-2xl text-black font-medium shadow-lg hover:bg-yellow-500 transition-all">
-                    <div className="flex items-center gap-3">
-                        <div className="p-1">
-                            <Image 
-                                src="/editurLogo.png" 
-                                width={28} 
-                                height={28} 
-                                alt={branding.siteName} 
-                            />
-                        </div>
-                        <div className="flex flex-col justify-start items-start">
-                            <span className="font-semibold text-base">{branding.siteName}</span>
-                            <span className="font-light text-sm opacity-80">Online, 24/7</span>
-                        </div>
-                    </div>
-                    <span className="font-semibold text-base">
-                        Make reels in 1 minute
-                    </span>
-                </Link>
-            </motion.div>
-
             {/* Trusted Creators Section */}
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
