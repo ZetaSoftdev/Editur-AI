@@ -43,6 +43,17 @@ export async function middleware(request: NextRequest) {
   if (path.startsWith('/api') && !path.startsWith('/api/admin')) {
     return NextResponse.next()
   }
+  
+  // Skip middleware for specific admin API routes that should be public
+  const publicAdminRoutes = [
+    '/api/admin/status',
+    '/api/admin/setup',
+    '/api/admin/seed'
+  ]
+  
+  if (publicAdminRoutes.includes(path)) {
+    return NextResponse.next()
+  }
 
   // Define public paths that don't require authentication
   const isPublicPath = [
