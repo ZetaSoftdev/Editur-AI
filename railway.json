@@ -1,11 +1,12 @@
 {
   "build": {
-    "builder": "nixpacks"
+    "builder": "nixpacks",
+    "buildCommand": "npm install && npx prisma generate && npm run build"
   },
   "deploy": {
-    "startCommand": "./scripts/setup-db.sh && npm start",
+    "startCommand": "chmod +x ./scripts/setup-db.sh && ./scripts/setup-db.sh && npm start",
     "healthcheckPath": "/api/health",
-    "healthcheckTimeout": 100,
+    "healthcheckTimeout": 120,
     "restartPolicyType": "on_failure",
     "restartPolicyMaxRetries": 10
   }
