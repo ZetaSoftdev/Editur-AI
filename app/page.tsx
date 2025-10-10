@@ -4,7 +4,11 @@ import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import ScrollingLogos from '@/components/ScrollingLogos'
 import CreatorsSection from '@/components/CreatorsSection'
+import TestimonialsSlider from '@/components/TestimonialsSlider'
 import ComparisonSection from '@/components/ComparisonSection'
+import PricingSection from '@/components/PricingSection'
+import FAQSection from '@/components/FAQSection'
+import UrgencyBanner from '@/components/UrgencyBanner'
 import Footer from '@/components/Footer'
 
 const page = () => {
@@ -26,11 +30,23 @@ const page = () => {
         <CreatorsSection />
       </div>
       <div>
+        <TestimonialsSlider />
+      </div>
+      <div>
         <ComparisonSection />
+      </div>
+      <div>
+        <PricingSection />
+      </div>
+      <div>
+        <FAQSection />
       </div>
       <div className='w-full'>
         <Footer />
       </div>
+      
+      {/* Sticky Urgency Banner */}
+      <UrgencyBanner />
     </div>
   )
 }
