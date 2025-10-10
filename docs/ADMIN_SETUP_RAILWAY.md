@@ -4,11 +4,17 @@
 
 The admin user (`admin@admin.com`) is created by the database seed script, but it might not have run properly on Railway deployment.
 
-## Solution: Multiple approaches to create the admin user
+## IMPORTANT: Railway Deployment Strategy
 
-### Method 1: Automatic API Seeding (Recommended)
+To avoid healthcheck timeouts, the application now starts first without waiting for database setup. After the application is deployed and healthy, you MUST manually trigger the database seeding.
 
-After your application is deployed to Railway, call these endpoints:
+## Solution: Manual seeding after deployment
+
+### Step 1: Wait for Railway deployment to complete
+Railway will deploy the application successfully with a simple health check.
+
+### Step 2: Manually seed the database
+After deployment, call these endpoints:
 
 #### 1. Check current status:
 ```bash

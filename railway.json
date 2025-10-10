@@ -4,10 +4,10 @@
     "buildCommand": "npm install && npx prisma generate && npm run build"
   },
   "deploy": {
-    "startCommand": "chmod +x ./scripts/setup-db.sh && ./scripts/setup-db.sh && npm start",
-    "healthcheckPath": "/api/health",
-    "healthcheckTimeout": 120,
+    "startCommand": "npm start",
+    "healthcheckPath": "/api/ping",
+    "healthcheckTimeout": 20,
     "restartPolicyType": "on_failure",
-    "restartPolicyMaxRetries": 10
+    "restartPolicyMaxRetries": 3
   }
 }
