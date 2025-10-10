@@ -21,11 +21,17 @@ model User {
   stripeCustomerId       String?
   stripePriceId          String?
   stripeSubscriptionId   String?
+  
+  // Credit system fields
+  trialCreditsUsed       Int                  @default(0)
+  hasRequiredPayment     Boolean              @default(false)
+  
   subscription           Subscription?
   videos                 Video[]
   editedVideos           EditedVideo[]
   socialAccounts         SocialMediaAccount[]
   scheduledPosts         ScheduledPost[]
+  creditTransactions     CreditTransaction[]
 }
 
 model Subscription {
@@ -35,8 +41,16 @@ model Subscription {
   status                 String
   startDate              DateTime          @default(now())
   endDate                DateTime?
+  
+  // Legacy minute tracking (for migration)
   minutesAllowed         Int
   minutesUsed            Int               @default(0)
+  
+  // New credit system
+  creditsAllowed         Int               @default(0)
+  creditsUsed            Int               @default(0)
+  additionalCredits      Int               @default(0)
+  
   stripeCustomerId       String?
   stripeSubscriptionId   String?
   planId                 String?
@@ -53,7 +67,13 @@ model SubscriptionPlan {
   monthlyPrice          Float
   yearlyPrice           Float
   features              String[]
+  
+  // Legacy minute fields (for migration)
   minutesAllowed        Int
+  
+  // New credit system
+  creditsAllowed        Int            @default(0)
+  
   maxFileSize           Int
   maxConcurrentRequests Int
   storageDuration       Int
@@ -81,6 +101,10 @@ model Video {
   lastStatusCheck DateTime?
   aspectRatio     String?   // New field for aspect ratio (9:16, 16:9, 1:1)
   numClipsRequested Int?    // New field for number of clips requested
+  
+  // Credit tracking
+  creditsDeducted Int       @default(0)  // Credits used for processing this video
+  
   clips           Clip[]
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -111,6 +135,10 @@ model Clip {
   wordTimestampFormat String?
   wordTimestampId     String?
   wordTimestampUrl    String?
+  
+  // Credit tracking
+  creditsDeducted     Int       @default(0)  // Credits used for generating this clip
+  
   video               Video     @relation(fields: [videoId], references: [id], onDelete: Cascade)
 }
 
@@ -195,6 +223,32 @@ model AppSettings {
   
   updatedAt                DateTime @updatedAt
   createdAt                DateTime @default(now())
+}
+
+model CreditTransaction {
+  id          String      @id @default(cuid())
+  userId      String
+  type        CreditType
+  amount      Int         // Positive for addition, negative for usage
+  description String      // "Video upload: 5 min", "Clip generation: 2 min"
+  videoId     String?     // Reference to related video
+  clipId      String?     // Reference to related clip
+  createdAt   DateTime    @default(now())
+  
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([createdAt])
+  @@index([type])
+}
+
+enum CreditType {
+  INPUT      // Heavy processing (upload/analysis)
+  OUTPUT     // Light processing (clip generation)
+  PURCHASE   // Bought credits
+  TRIAL      // Free trial credits
+  PLAN       // Monthly plan allocation
+  REFUND     // Credit refund
 }
 
 enum Role {
