@@ -11,7 +11,7 @@ import { Role } from '@/lib/constants';
 const defaultBranding = {
   siteName: "Editur AI",
   logoUrl: "/editurLogo.png",
-  faviconUrl: "/editurLogo.png",
+  faviconUrl: "/icon1.png",
   primaryColor: "#8B5CF6",
   accentColor: "#F59E0B",
   defaultFont: "Poppins"
@@ -91,7 +91,7 @@ async function ensureBrandingSettings() {
           data: {
             siteName: "Editur AI",
             logoUrl: "/branding/logo.png",
-            faviconUrl: "/branding/favicon.png",
+            faviconUrl: "/icon1.png",
             primaryColor: "#8B5CF6",
             accentColor: "#F59E0B",
             defaultFont: "Poppins"
@@ -104,7 +104,7 @@ async function ensureBrandingSettings() {
         await writeSettingsToFile({
           siteName: "Editur AI",
           logoUrl: "/branding/logo.png",
-          faviconUrl: "/branding/favicon.png",
+          faviconUrl: "/icon1.png",
           primaryColor: "#8B5CF6",
           accentColor: "#F59E0B",
           defaultFont: "Poppins"

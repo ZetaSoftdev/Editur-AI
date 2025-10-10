@@ -163,7 +163,7 @@ export default function SettingsPage() {
           branding: {
             siteName: data.siteName || "Trod AI",
             logo: data.logoUrl || "/branding/logo.png",
-            favicon: data.faviconUrl || "/branding/favicon.png",
+            favicon: data.faviconUrl || "/icon1.png",
             primaryColor: data.primaryColor || "#8B5CF6",
             accentColor: data.accentColor || "#F59E0B",
             defaultFont: data.defaultFont || "Poppins"

@@ -21,7 +21,7 @@ type LogoContextType = {
 const defaultBranding: BrandingSettings = {
   siteName: 'Editur AI',
   logoUrl: '/branding/logo.png',
-  faviconUrl: '/branding/favicon.png',
+  faviconUrl: '/icon1.png',
   primaryColor: "#8B5CF6",
   accentColor: "#F59E0B",
   defaultFont: "Poppins"

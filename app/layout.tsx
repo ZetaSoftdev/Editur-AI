@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 // Default branding settings to use during build or when API call fails
 const defaultBrandingSettings = {
   siteName: 'Editur',
-  faviconUrl: '/branding/favicon.png',
+  faviconUrl: '/icon1.png',
   logoUrl: '/editur.png',
   primaryColor: '#8B5CF6',
   accentColor: '#F59E0B',
