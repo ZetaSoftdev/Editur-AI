@@ -38,15 +38,15 @@ const testimonials = [
 
 const CreatorsSection = () => {
   return (
-    <section className="text-white py-20 px-4 sm:px-12 text-center">
+    <section className="text-white py-20 px-4 sm:px-12 text-center relative z-10">
       {/* Heading */}
       <motion.h2 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
-        className="text-lg sm:text-2xl lg:text-3xl font-bold mb-4"
+        className="text-lg sm:text-2xl lg:text-3xl font-bold mb-4 relative z-20"
       >
-        <span className="text-[#8B5CF6]">Make Serious Money</span>
+        <span className="text-white">Make Serious Money</span>
       </motion.h2>
 
       {/* Subheading */}
