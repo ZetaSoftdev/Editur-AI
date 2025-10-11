@@ -56,9 +56,9 @@ const Hero = () => {
                         transition={{ duration: 1, delay: 0.2 }}
                         className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold leading-tight"
                     >
-                        <span className="text-white text-lg sm:text-xl lg:text-2xl" style={{fontFamily: 'Brush Script MT, cursive'}}>Create Engaging Clips in Seconds</span>
+                        <span className="text-[#FFD700] text-lg sm:text-xl lg:text-2xl" style={{fontFamily: 'Brush Script MT, cursive'}}>Create Engaging Clips in Seconds</span>
                         <br />
-                        <span className="text-[#FFD700]">Turn your videos to</span>
+                        <span className="text-white">Turn your videos to</span>
                         <br />
                         <span className="text-[#FFD700]">
                             {text}

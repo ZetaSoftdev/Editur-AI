@@ -19,11 +19,11 @@ const page = () => {
       <Navbar />
       </div>
         
-      <div className='relative items-center pb-8'>
+      <div className='relative items-center pb-4'>
         <Hero />
       </div>
       {/* ✅ Scrolling Logos Positioned Below Hero */}
-      <div className='relative mt-4 pb-8'>
+      <div className='relative pb-4'>
         <ScrollingLogos />
       </div>
       <div>

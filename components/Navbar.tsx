@@ -70,7 +70,7 @@ const Navbar = () => {
 
   return (
     <nav className="flex justify-center items-center w-full py-[1.7rem] mt-4 md:mt-2 sm:mt-4">
-      <div className="flex items-center justify-between w-[22rem] sm:w-[30rem] md:w-[56rem] max-w-[56rem] px-1 py-1 rounded-full bg-[#14061f] shadow-lg">
+      <div className="flex items-center justify-between w-[22rem] sm:w-[30rem] md:w-[56rem] max-w-[56rem] px-1 py-1 rounded-full bg-white shadow-lg">
         {/* Logo */}
         <Link href={"/"} className="flex items-center gap-2 pl-4">
           <Image 
@@ -84,7 +84,7 @@ const Navbar = () => {
         </Link>
 
         {/* Nav Links */}
-        <ul className="hidden md:flex items-center gap-6 text-white text-sm">
+        <ul className="hidden md:flex items-center gap-6 text-black text-sm">
           <li className="flex items-center gap-1 cursor-pointer hover:bg-gray-100/25 rounded-lg p-2 px-3 font-medium text-base" 
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}>
@@ -97,14 +97,14 @@ const Navbar = () => {
 
         {/* CTA Button */}
         <div className="hidden md:flex items-center gap-2">
-          <Link href={"/login"} className="cursor-pointer text-white font-medium text-base hover:bg-gray-100/25 rounded-lg p-2 px-3">Log in</Link>
+          <Link href={"/login"} className="cursor-pointer text-black font-medium text-base hover:bg-gray-100/25 rounded-lg p-2 px-3">Log in</Link>
           <Link href={"sign-up"} className="bg-purple-600 text-white font-bold px-6 py-3 rounded-full shadow-md hover:bg-purple-400">
             Try for free
           </Link>
         </div>
 
         {/* ✅ Mobile Menu Toggle */}
-      <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden text-white text-2xl pr-4">
+      <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden text-black text-2xl pr-4">
         {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
       </button>
 

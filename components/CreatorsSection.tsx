@@ -44,7 +44,7 @@ const CreatorsSection = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
-        className="text-2xl sm:text-4xl lg:text-5xl font-bold mb-4"
+        className="text-lg sm:text-2xl lg:text-3xl font-bold mb-4"
       >
         Here's the thing: <br />
         <span className="text-[#FFD700]">these creators are making</span>
@@ -56,7 +56,7 @@ const CreatorsSection = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.2 }}
-        className="mt-4 text-lg sm:text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto"
+        className="mt-4 text-base sm:text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto"
       >
         While you're manually editing for hours, they're making <span className="text-[#FFD700] font-bold">$10K+/month</span> on autopilot
       </motion.p>
@@ -89,8 +89,12 @@ const CreatorsSection = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 + index * 0.2 }}
-            className="bg-gray-800/50 border border-[#8B5CF6]/30 rounded-xl p-6 hover:border-[#8B5CF6]/50 transition-all duration-300 hover:transform hover:scale-105"
+            className="bg-gray-800/50 border border-[#8B5CF6]/30 rounded-xl p-6 hover:border-[#8B5CF6]/50 transition-all duration-300 hover:transform hover:scale-105 relative"
           >
+            <div className="flex text-[#FFD700] absolute top-4 right-4">
+              ⭐⭐⭐⭐⭐
+            </div>
+            
             <div className="flex items-center mb-4">
               <Image 
                 src={testimonial.avatar} 
@@ -110,9 +114,6 @@ const CreatorsSection = () => {
             
             <div className="mb-4">
               <div className="text-2xl font-bold text-[#FFD700] mb-2">{testimonial.revenue}</div>
-              <div className="flex text-[#FFD700] mb-3">
-                ⭐⭐⭐⭐⭐
-              </div>
             </div>
             
             <p className="text-gray-200 text-sm leading-relaxed italic">
