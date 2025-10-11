@@ -168,36 +168,28 @@ const ComparisonSection = () => {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 1.6 }}
-        className="mt-16 bg-gradient-to-r from-green-900/40 to-green-800/40 border border-green-500/50 rounded-xl p-8 max-w-4xl mx-auto"
+        className="mt-16 bg-gradient-to-r from-green-900/40 to-green-800/40 border border-green-500/50 rounded-xl p-6 max-w-2xl mx-auto"
       >
-        <h3 className="text-3xl font-bold text-green-300 mb-6">Your ROI in First Month</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div className="text-center">
-            <div className="text-4xl font-bold text-green-200">$4,081</div>
+        <h3 className="text-2xl font-bold text-green-300 mb-4">Your ROI in First Month</h3>
+        <div className="grid grid-cols-3 gap-4 text-center">
+          <div>
+            <div className="text-3xl font-bold text-green-200">$4,081</div>
             <div className="text-sm text-green-300">Money Saved</div>
           </div>
-          <div className="text-center">
-            <div className="text-4xl font-bold text-green-200">81 hrs</div>
+          <div>
+            <div className="text-3xl font-bold text-green-200">81 hrs</div>
             <div className="text-sm text-green-300">Time Saved</div>
           </div>
-          <div className="text-center">
-            <div className="text-4xl font-bold text-green-200">21,474%</div>
+          <div>
+            <div className="text-3xl font-bold text-green-200">21,474%</div>
             <div className="text-sm text-green-300">ROI</div>
           </div>
         </div>
-        
-        <motion.div 
-          className="mt-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2.0 }}
-        >
-          <Link href="/dashboard">
-            <button className="bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-bold py-4 px-8 rounded-lg text-lg transform transition-all duration-300 hover:scale-105 shadow-xl">
-              Get 21,474% ROI Now
-            </button>
-          </Link>
-        </motion.div>
+        <div className="mt-4 p-3 bg-green-800/30 rounded-lg">
+          <p className="text-green-200 text-sm">
+            That's <span className="font-bold">21,474% return</span> + <span className="font-bold">81 hours saved</span> in your first month
+          </p>
+        </div>
       </motion.div>
 
       {/* Final CTA */}

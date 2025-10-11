@@ -94,13 +94,6 @@ const TestimonialsSlider = () => {
           transition={{ duration: 0.5 }}
           className="bg-gradient-to-br from-[#8B5CF6]/20 to-[#7C3AED]/20 border border-[#8B5CF6]/30 rounded-3xl p-8 sm:p-12"
         >
-          {/* Star Rating */}
-          <div className="flex justify-center mb-6">
-            <div className="flex text-[#8B5CF6] text-xl">
-              ⭐⭐⭐⭐⭐
-            </div>
-          </div>
-
           {/* Quote */}
           <blockquote className="text-xl sm:text-2xl text-gray-200 italic leading-relaxed mb-8">
             "{currentTestimonial.quote}"
@@ -109,6 +102,10 @@ const TestimonialsSlider = () => {
           {/* Creator Info */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <div className="flex items-center gap-4">
+              {/* Star Rating */}
+              <div className="flex text-[#8B5CF6] text-sm mb-1">
+                ⭐⭐⭐⭐⭐
+              </div>
               <Image
                 src={currentTestimonial.avatar}
                 width={60}

@@ -155,8 +155,8 @@ const CreatorsSection = () => {
         className="mt-12"
       >
         <Link href="/dashboard">
-          <button className="bg-white hover:bg-gray-100 text-[#8B5CF6] border-2 border-[#8B5CF6] font-bold py-4 px-8 rounded-full text-lg transform transition-all duration-300 hover:scale-105 shadow-xl">
-            🚀 Join 127K+ Successful Creators
+          <button className="bg-[#8B5CF6] hover:bg-[#7C3AED] text-white border-2 border-[#8B5CF6] font-bold py-4 px-8 rounded-full text-lg transform transition-all duration-300 hover:scale-105 shadow-xl">
+            Join 127K+ Successful Creators
           </button>
         </Link>
       </motion.div>
