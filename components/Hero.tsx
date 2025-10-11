@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useLogoContext } from "@/context/LogoContext";
 
-const words = ["TikTok", "Instagram", "Reels", "Shorts"];
+const words = ["Engaging clips", "viral reels", "youtube shorts", "TikTok"];
 const typingSpeed = 100;
 const deleteSpeed = 50;
 const delayBetweenWords = 1000;
@@ -56,11 +56,12 @@ const Hero = () => {
                         transition={{ duration: 1, delay: 0.2 }}
                         className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold leading-tight"
                     >
-                        <span className="text-white text-lg sm:text-xl lg:text-2xl" style={{fontFamily: 'Rockybilly, Eagle Horizon-Personal use, Priestacy, cursive'}}>Create Engaging Clips in Seconds</span>
+                        <span className="text-white text-lg sm:text-xl lg:text-2xl" style={{fontFamily: 'Brush Script MT, cursive'}}>Create Engaging Clips in Seconds</span>
                         <br />
-                        <span className="text-[#FFD700]">Turn 1 Long Video Into </span>
+                        <span className="text-[#FFD700]">Turn your videos to</span>
+                        <br />
                         <span className="text-[#FFD700]">
-                            10+ Viral {text}
+                            {text}
                             <motion.span
                                 className="inline-block w-[3px] h-[20px] lg:h-[30px] bg-[#FFD700] ml-2"
                                 animate={{ opacity: [0, 1, 0] }}
@@ -76,9 +77,6 @@ const Hero = () => {
                         transition={{ duration: 1, delay: 0.4 }}
                         className="space-y-4"
                     >
-                        <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[#FFD700]">
-                            In Under 60 Seconds ⚡
-                        </h2>
                         <p className="text-lg sm:text-xl text-gray-300 leading-relaxed max-w-lg">
                             Our AI does what a <span className="text-[#FFD700] font-semibold">$3,000/month video editor</span> does for{" "}
                             <span className="text-white font-semibold">just $19/month</span> - while you sleep
