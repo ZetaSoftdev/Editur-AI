@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const features = [
-  "Making $1,000s/mo from shorts",
+  "start 6-figure income from shorts",
   "Growing audiences faster",
   "With minimal effort required",
 ];
@@ -106,14 +106,13 @@ const CreatorsSection = () => {
               <div className="ml-3 text-left">
                 <div className="flex items-center">
                   <h4 className="font-semibold text-white">{testimonial.name}</h4>
-                  {testimonial.verified && <span className="ml-2 text-blue-400">✓</span>}
                 </div>
                 <p className="text-sm text-gray-400">{testimonial.role}</p>
               </div>
             </div>
             
             <div className="mb-4">
-              <div className="text-2xl font-bold text-[#8B5CF6] mb-2">{testimonial.revenue}</div>
+              <div className="text-2xl font-bold text-[#FFD700] mb-2">{testimonial.revenue}</div>
             </div>
             
             <p className="text-gray-200 text-sm leading-relaxed italic">
@@ -131,19 +130,19 @@ const CreatorsSection = () => {
         className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-8 max-w-4xl mx-auto"
       >
         <div className="text-center">
-          <div className="text-3xl sm:text-4xl font-bold text-[#8B5CF6]">127K+</div>
+          <div className="text-3xl sm:text-4xl font-bold text-[#FFD700]">127K+</div>
           <div className="text-gray-400 text-sm mt-1">Happy Creators</div>
         </div>
         <div className="text-center">
-          <div className="text-3xl sm:text-4xl font-bold text-[#8B5CF6]">2.5M+</div>
+          <div className="text-3xl sm:text-4xl font-bold text-[#FFD700]">2.5M+</div>
           <div className="text-gray-400 text-sm mt-1">Videos Created</div>
         </div>
         <div className="text-center">
-          <div className="text-3xl sm:text-4xl font-bold text-[#8B5CF6]">$50M+</div>
+          <div className="text-3xl sm:text-4xl font-bold text-[#FFD700]">$50M+</div>
           <div className="text-gray-400 text-sm mt-1">Revenue Generated</div>
         </div>
         <div className="text-center">
-          <div className="text-3xl sm:text-4xl font-bold text-[#8B5CF6]">4.9★</div>
+          <div className="text-3xl sm:text-4xl font-bold text-[#FFD700]">4.9★</div>
           <div className="text-gray-400 text-sm mt-1">Average Rating</div>
         </div>
       </motion.div>

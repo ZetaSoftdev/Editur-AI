@@ -33,8 +33,7 @@ const ComparisonSection = () => {
         transition={{ duration: 1 }}
         className="text-3xl sm:text-6xl font-bold mb-8"
       >
-        <span className="text-gray-400">The Old Way vs</span> <br />
-        <span className="text-[#8B5CF6]">The Smart Way</span>
+        <span className="text-white">The Old Way vs </span><span className="text-[#8B5CF6]">The Smart Way</span>
       </motion.h2>
 
       {/* Subheading */}
@@ -53,53 +52,53 @@ const ComparisonSection = () => {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.4 }}
-        className="bg-gradient-to-r from-gray-700/20 to-gray-600/20 border border-gray-500/30 rounded-xl p-6 max-w-2xl mx-auto mb-16"
+        className="bg-gradient-to-r from-red-900/40 to-red-800/40 border border-red-500/50 rounded-xl p-6 max-w-2xl mx-auto mb-16"
       >
-        <h3 className="text-2xl font-bold text-gray-300 mb-4">💸 What You're Currently Spending</h3>
+        <h3 className="text-2xl font-bold text-red-300 mb-4">What You're Currently Spending</h3>
         <div className="grid grid-cols-2 gap-4 text-center">
           <div>
-            <div className="text-3xl font-bold text-gray-300">$4,100</div>
-            <div className="text-sm text-gray-400">Monthly Costs</div>
+            <div className="text-3xl font-bold text-red-200">$4,100</div>
+            <div className="text-sm text-red-300">Monthly Costs</div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-gray-300">83 hrs</div>
-            <div className="text-sm text-gray-400">Time Wasted</div>
+            <div className="text-3xl font-bold text-red-200">83 hrs</div>
+            <div className="text-sm text-red-300">Time Wasted</div>
           </div>
         </div>
-        <div className="mt-4 p-3 bg-gray-600/20 rounded-lg">
-          <p className="text-gray-300 text-sm">
+        <div className="mt-4 p-3 bg-red-800/30 rounded-lg">
+          <p className="text-red-200 text-sm">
             That's <span className="font-bold">$49,200/year</span> + <span className="font-bold">996 hours</span> you could invest elsewhere
           </p>
         </div>
       </motion.div>
 
       {/* Comparison Table */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-7xl mx-auto items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-7xl mx-auto items-stretch">
         {/* Without EditurAI */}
         <motion.div 
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, delay: 0.6 }}
-          className="relative"
+          className="relative flex"
         >
-          <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-500/30 h-full flex flex-col relative">
+          <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-500/30 w-full flex flex-col relative">
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gray-600 text-white px-6 py-2 rounded-full text-sm font-bold z-20">
-              ❌ OLD WAY
+              OLD WAY
             </div>
             
             <h3 className="text-2xl font-semibold text-gray-300 mb-6 mt-4">Without {branding.siteName}</h3>
             
-            <div className="space-y-4 flex-grow">
+            <div className="space-y-4 flex-1">
               {beforeItems.map((item, index) => (
                 <motion.div 
                   key={index} 
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
-                  className="flex items-center gap-4 p-4 bg-gray-800/50 rounded-lg border border-gray-500/20 hover:border-gray-500/40 transition-colors"
+                  className="flex items-center gap-4 p-4 bg-gray-800/50 rounded-lg border border-gray-500/20 hover:border-gray-500/40 transition-colors min-h-[80px]"
                 >
                   <span className="text-gray-400 text-2xl flex-shrink-0">✖</span>
-                  <div className="flex-grow">
+                  <div className="flex-grow flex flex-col justify-center h-full">
                     <p className="text-gray-200 text-sm mb-2">{item.text}</p>
                     <div className="flex justify-between text-xs">
                       <span className="text-gray-400 font-semibold">{item.cost}</span>
@@ -126,7 +125,7 @@ const ComparisonSection = () => {
         >
           <div className="bg-gradient-to-br from-[#8B5CF6]/20 to-[#7C3AED]/20 p-8 rounded-2xl shadow-2xl border-2 border-[#8B5CF6]/50 h-full flex flex-col relative overflow-visible">
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] text-white px-6 py-2 rounded-full text-sm font-bold z-30">
-              ✨ NEW WAY
+              NEW WAY
             </div>
             
             {/* Animated background */}
@@ -141,10 +140,10 @@ const ComparisonSection = () => {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 1.0 + index * 0.1 }}
-                  className="flex items-center gap-4 p-4 bg-gray-800/30 rounded-lg border border-[#8B5CF6]/30 hover:border-[#8B5CF6]/60 hover:bg-[#8B5CF6]/10 transition-all duration-300 hover:scale-105"
+                  className="flex items-center gap-4 p-4 bg-gray-800/30 rounded-lg border border-[#8B5CF6]/30 hover:border-[#8B5CF6]/60 hover:bg-[#8B5CF6]/10 transition-all duration-300 hover:scale-105 min-h-[80px]"
                 >
                   <span className="text-[#8B5CF6] text-2xl flex-shrink-0">✓</span>
-                  <div className="flex-grow">
+                  <div className="flex-grow flex flex-col justify-center h-full">
                     <p className="text-gray-200 text-sm mb-2">{item.text}</p>
                     <div className="flex justify-between text-xs">
                       <span className="text-[#8B5CF6] font-semibold">{item.benefit}</span>
@@ -169,21 +168,21 @@ const ComparisonSection = () => {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 1.6 }}
-        className="mt-16 bg-gradient-to-r from-[#8B5CF6]/20 to-[#7C3AED]/20 border border-[#8B5CF6]/30 rounded-xl p-8 max-w-4xl mx-auto"
+        className="mt-16 bg-gradient-to-r from-green-900/40 to-green-800/40 border border-green-500/50 rounded-xl p-8 max-w-4xl mx-auto"
       >
-        <h3 className="text-3xl font-bold text-[#8B5CF6] mb-6">📈 Your ROI in First Month</h3>
+        <h3 className="text-3xl font-bold text-green-300 mb-6">Your ROI in First Month</h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div className="text-center">
-            <div className="text-4xl font-bold text-[#8B5CF6]">$4,081</div>
-            <div className="text-sm text-gray-300">Money Saved</div>
+            <div className="text-4xl font-bold text-green-200">$4,081</div>
+            <div className="text-sm text-green-300">Money Saved</div>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-bold text-[#8B5CF6]">81 hrs</div>
-            <div className="text-sm text-gray-300">Time Saved</div>
+            <div className="text-4xl font-bold text-green-200">81 hrs</div>
+            <div className="text-sm text-green-300">Time Saved</div>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-bold text-[#8B5CF6]">21,474%</div>
-            <div className="text-sm text-gray-300">ROI</div>
+            <div className="text-4xl font-bold text-green-200">21,474%</div>
+            <div className="text-sm text-green-300">ROI</div>
           </div>
         </div>
         
@@ -195,7 +194,7 @@ const ComparisonSection = () => {
         >
           <Link href="/dashboard">
             <button className="bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-bold py-4 px-8 rounded-lg text-lg transform transition-all duration-300 hover:scale-105 shadow-xl">
-              🚀 Get 21,474% ROI Now
+              Get 21,474% ROI Now
             </button>
           </Link>
         </motion.div>
@@ -212,8 +211,8 @@ const ComparisonSection = () => {
           Stop throwing money away. <span className="text-[#8B5CF6] font-bold">Start your 3-month free trial</span> and see the difference.
         </p>
         <Link href="/dashboard">
-          <button className="bg-white hover:bg-gray-100 text-[#8B5CF6] border-2 border-[#8B5CF6] font-bold py-5 px-10 rounded-full text-xl shadow-2xl transform transition-all duration-300 hover:scale-105">
-            🔥 Save $49,200/Year - Start Free Trial
+          <button className="bg-[#8B5CF6] hover:bg-[#7C3AED] text-white border-2 border-[#8B5CF6] font-bold py-5 px-10 rounded-full text-xl shadow-2xl transform transition-all duration-300 hover:scale-105">
+            Save $49,200/Year - Start Free Trial
           </button>
         </Link>
       </motion.div>

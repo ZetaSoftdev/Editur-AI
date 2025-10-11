@@ -23,7 +23,7 @@ const page = () => {
         <Hero />
       </div>
       {/* ✅ Scrolling Logos Positioned Below Hero */}
-      <div className='relative'>
+      <div className='relative -mt-16'>
         <ScrollingLogos />
       </div>
       <div>
