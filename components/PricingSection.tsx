@@ -22,18 +22,18 @@ const PricingSection = () => {
 
   return (
     <section className="text-white py-20 px-4 sm:px-12 text-center">
-      {/* FOMO Header */}
+      {/* Header with subtle branding */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="bg-gradient-to-r from-red-600 to-red-500 text-white px-6 py-4 rounded-2xl max-w-4xl mx-auto mb-12"
+        className="bg-gradient-to-r from-[#8B5CF6]/10 to-[#7C3AED]/10 border border-[#8B5CF6]/20 text-white px-6 py-4 rounded-2xl max-w-4xl mx-auto mb-12"
       >
-        <h2 className="text-2xl sm:text-4xl font-bold mb-2">🔥 FLASH SALE ENDING SOON!</h2>
-        <p className="text-lg sm:text-xl">
-          70% OFF + 3 Months FREE - Only <span className="font-bold animate-pulse">{formatTime(timeLeft)}</span> left!
+        <h2 className="text-2xl sm:text-4xl font-bold mb-2">✨ Limited Time Offer</h2>
+        <p className="text-lg sm:text-xl text-gray-300">
+          70% OFF + 3 Months FREE - Only {formatTime(timeLeft)} left!
         </p>
-        <p className="text-sm mt-2 opacity-90">⚠️ Only 47 spots remaining at this price</p>
+        <p className="text-sm mt-2 text-gray-400">⚠️ Only 47 spots remaining at this price</p>
       </motion.div>
 
       {/* Main Heading */}

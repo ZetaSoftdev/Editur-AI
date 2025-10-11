@@ -160,28 +160,7 @@ const CreatorsSection = () => {
           </button>
         </Link>
       </motion.div>
-      
-      {/* Demo Video */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1, delay: 1.6 }}
-        className="mt-20 flex justify-center"
-      >
-        <div className="relative max-w-5xl w-full">
-          <video
-            src="/edituranimate.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full rounded-3xl shadow-2xl border-4 border-[#8B5CF6]/30"
-          ></video>
-          <div className="absolute -top-4 -right-4 bg-red-500 text-white px-4 py-2 rounded-full text-sm font-bold animate-bounce">
-            🔥 LIVE DEMO
-          </div>
-        </div>
-      </motion.div>
+
     </section>
   );
 };

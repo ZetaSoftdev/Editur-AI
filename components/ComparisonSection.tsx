@@ -33,8 +33,8 @@ const ComparisonSection = () => {
         transition={{ duration: 1 }}
         className="text-3xl sm:text-6xl font-bold mb-8"
       >
-        <span className="text-red-400">Stop Bleeding Money</span> <br />
-        <span className="text-[#FFD700]">Start Making Money</span>
+        <span className="text-gray-400">The Old Way vs</span> <br />
+        <span className="text-[#8B5CF6]">The Smart Way</span>
       </motion.h2>
 
       {/* Subheading */}
@@ -44,8 +44,8 @@ const ComparisonSection = () => {
         transition={{ duration: 1, delay: 0.2 }}
         className="mt-4 text-xl text-gray-300 max-w-4xl mx-auto mb-12"
       >
-        The old way costs you <span className="text-red-400 font-bold">$4,000+/month</span> and <span className="text-red-400 font-bold">80+ hours</span>. 
-        With <span className="text-[#FFD700] font-bold">{branding.siteName}</span>, get <span className="text-green-400 font-bold">10x better results</span> for <span className="text-green-400 font-bold">99% less cost</span>.
+        The old way costs you <span className="text-gray-400 font-bold">$4,000+/month</span> and <span className="text-gray-400 font-bold">80+ hours</span>. 
+        With <span className="text-[#8B5CF6] font-bold">{branding.siteName}</span>, get <span className="text-[#FFD700] font-bold">10x better results</span> for <span className="text-[#FFD700] font-bold">99% less cost</span>.
       </motion.p>
 
       {/* Cost Calculator */}
@@ -53,22 +53,22 @@ const ComparisonSection = () => {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.4 }}
-        className="bg-gradient-to-r from-red-600/20 to-red-500/20 border border-red-500/30 rounded-xl p-6 max-w-2xl mx-auto mb-16"
+        className="bg-gradient-to-r from-gray-700/20 to-gray-600/20 border border-gray-500/30 rounded-xl p-6 max-w-2xl mx-auto mb-16"
       >
-        <h3 className="text-2xl font-bold text-red-400 mb-4">💸 What You're Currently Losing</h3>
+        <h3 className="text-2xl font-bold text-gray-300 mb-4">💸 What You're Currently Spending</h3>
         <div className="grid grid-cols-2 gap-4 text-center">
           <div>
-            <div className="text-3xl font-bold text-red-400">$4,100</div>
-            <div className="text-sm text-gray-300">Monthly Costs</div>
+            <div className="text-3xl font-bold text-gray-300">$4,100</div>
+            <div className="text-sm text-gray-400">Monthly Costs</div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-red-400">83 hrs</div>
-            <div className="text-sm text-gray-300">Time Wasted</div>
+            <div className="text-3xl font-bold text-gray-300">83 hrs</div>
+            <div className="text-sm text-gray-400">Time Wasted</div>
           </div>
         </div>
-        <div className="mt-4 p-3 bg-red-500/20 rounded-lg">
-          <p className="text-red-200 text-sm">
-            That's <span className="font-bold">$49,200/year</span> + <span className="font-bold">996 hours</span> you'll never get back
+        <div className="mt-4 p-3 bg-gray-600/20 rounded-lg">
+          <p className="text-gray-300 text-sm">
+            That's <span className="font-bold">$49,200/year</span> + <span className="font-bold">996 hours</span> you could invest elsewhere
           </p>
         </div>
       </motion.div>
@@ -82,12 +82,12 @@ const ComparisonSection = () => {
           transition={{ duration: 1, delay: 0.6 }}
           className="relative"
         >
-          <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-8 rounded-2xl shadow-2xl border border-red-500/30">
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-2 rounded-full text-sm font-bold">
-              🚫 OLD WAY
+          <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-500/30">
+            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gray-600 text-white px-6 py-2 rounded-full text-sm font-bold">
+              ❌ OLD WAY
             </div>
             
-            <h3 className="text-2xl font-semibold text-red-400 mb-6 mt-4">Without {branding.siteName}</h3>
+            <h3 className="text-2xl font-semibold text-gray-300 mb-6 mt-4">Without {branding.siteName}</h3>
             
             <div className="space-y-4">
               {beforeItems.map((item, index) => (
@@ -96,13 +96,13 @@ const ComparisonSection = () => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
-                  className="flex items-start gap-4 p-4 bg-gray-800/50 rounded-lg border border-red-500/20 hover:border-red-500/40 transition-colors"
+                  className="flex items-start gap-4 p-4 bg-gray-800/50 rounded-lg border border-gray-500/20 hover:border-gray-500/40 transition-colors"
                 >
-                  <span className="text-red-500 text-2xl flex-shrink-0">✖</span>
+                  <span className="text-gray-400 text-2xl flex-shrink-0">✖</span>
                   <div className="flex-grow">
                     <p className="text-gray-200 text-sm mb-2">{item.text}</p>
                     <div className="flex justify-between text-xs">
-                      <span className="text-red-400 font-semibold">{item.cost}</span>
+                      <span className="text-gray-400 font-semibold">{item.cost}</span>
                       <span className="text-gray-500">{item.pain}</span>
                     </div>
                   </div>
@@ -110,9 +110,9 @@ const ComparisonSection = () => {
               ))}
             </div>
             
-            <div className="mt-6 p-4 bg-red-500/20 rounded-lg text-center">
-              <div className="text-2xl font-bold text-red-400">Total: $4,100/month</div>
-              <div className="text-sm text-red-300">+ 83 hours of your life</div>
+            <div className="mt-6 p-4 bg-gray-600/20 rounded-lg text-center">
+              <div className="text-2xl font-bold text-gray-300">Total: $4,100/month</div>
+              <div className="text-sm text-gray-400">+ 83 hours of your time</div>
             </div>
           </div>
         </motion.div>
@@ -169,20 +169,20 @@ const ComparisonSection = () => {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 1.6 }}
-        className="mt-16 bg-gradient-to-r from-green-600/20 to-green-500/20 border border-green-500/30 rounded-xl p-8 max-w-4xl mx-auto"
+        className="mt-16 bg-gradient-to-r from-[#8B5CF6]/20 to-[#7C3AED]/20 border border-[#8B5CF6]/30 rounded-xl p-8 max-w-4xl mx-auto"
       >
-        <h3 className="text-3xl font-bold text-green-400 mb-6">📈 Your ROI in First Month</h3>
+        <h3 className="text-3xl font-bold text-[#8B5CF6] mb-6">📈 Your ROI in First Month</h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div className="text-center">
-            <div className="text-4xl font-bold text-green-400">$4,081</div>
+            <div className="text-4xl font-bold text-[#FFD700]">$4,081</div>
             <div className="text-sm text-gray-300">Money Saved</div>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-bold text-green-400">81 hrs</div>
+            <div className="text-4xl font-bold text-[#FFD700]">81 hrs</div>
             <div className="text-sm text-gray-300">Time Saved</div>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-bold text-green-400">21,474%</div>
+            <div className="text-4xl font-bold text-[#FFD700]">21,474%</div>
             <div className="text-sm text-gray-300">ROI</div>
           </div>
         </div>
@@ -194,7 +194,7 @@ const ComparisonSection = () => {
           transition={{ delay: 2.0 }}
         >
           <Link href="/dashboard">
-            <button className="bg-gradient-to-r from-green-500 to-green-400 hover:from-green-400 hover:to-green-300 text-black font-bold py-4 px-8 rounded-full text-lg transform transition-all duration-300 hover:scale-105 shadow-xl">
+            <button className="bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-bold py-4 px-8 rounded-lg text-lg transform transition-all duration-300 hover:scale-105 shadow-xl">
               🚀 Get 21,474% ROI Now
             </button>
           </Link>

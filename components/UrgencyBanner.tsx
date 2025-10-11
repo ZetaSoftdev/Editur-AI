@@ -28,14 +28,14 @@ const UrgencyBanner = () => {
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       exit={{ y: 100, opacity: 0 }}
-      className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-red-600 to-red-500 text-white p-4 shadow-2xl"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] text-white p-4 shadow-2xl"
     >
       <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <span className="text-2xl animate-bounce">⏰</span>
+          <span className="text-2xl">⏰</span>
           <div>
             <p className="font-bold text-lg">
-              LAST CHANCE: 70% OFF expires in {formatTime(timeLeft)}
+              Limited Time: 70% OFF expires in {formatTime(timeLeft)}
             </p>
             <p className="text-sm opacity-90">
               Don't miss out on saving $1,896/year • Only 47 spots left!
@@ -45,7 +45,7 @@ const UrgencyBanner = () => {
         
         <div className="flex items-center gap-3">
           <Link href="/dashboard">
-            <button className="bg-[#FFD700] hover:bg-[#F59E0B] text-black font-bold py-3 px-6 rounded-full transition-all duration-300 hover:scale-105 shadow-xl">
+            <button className="bg-[#FFD700] hover:bg-[#F59E0B] text-black font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:scale-105 shadow-xl">
               🚀 Claim Offer Now
             </button>
           </Link>
