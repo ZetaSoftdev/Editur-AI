@@ -28,7 +28,7 @@ const UrgencyBanner = () => {
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       exit={{ y: 100, opacity: 0 }}
-      className="fixed bottom-0 left-0 right-0 z-50 bg-black text-white p-4 shadow-2xl"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-white text-black p-4 shadow-2xl"
     >
       <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-4">
@@ -51,7 +51,7 @@ const UrgencyBanner = () => {
           </Link>
           <button 
             onClick={() => setIsVisible(false)}
-            className="text-white/70 hover:text-white text-2xl"
+            className="text-black/70 hover:text-black text-2xl"
           >
             ×
           </button>

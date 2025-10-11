@@ -54,17 +54,15 @@ const Hero = () => {
                         initial={{ opacity: 0, y: 40 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, delay: 0.2 }}
-                        className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight"
+                        className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold leading-tight"
                     >
-                        <span className="text-[#FFD700] font-['Pacifico']" style={{fontFamily: 'Pacifico, cursive'}}>Create Engaging Clips</span>
+                        <span className="text-white text-lg sm:text-xl lg:text-2xl" style={{fontFamily: 'Rockybilly, Eagle Horizon-Personal use, Priestacy, cursive'}}>Create Engaging Clips in Seconds</span>
                         <br />
-                        <span className="text-white">From Your Videos</span>
-                        <br />
-                        <span className="text-white">Turn 1 Long Video Into </span>
-                        <span className="text-white">
+                        <span className="text-[#FFD700]">Turn 1 Long Video Into </span>
+                        <span className="text-[#FFD700]">
                             10+ Viral {text}
                             <motion.span
-                                className="inline-block w-[3px] h-[30px] lg:h-[50px] bg-white ml-2"
+                                className="inline-block w-[3px] h-[20px] lg:h-[30px] bg-[#FFD700] ml-2"
                                 animate={{ opacity: [0, 1, 0] }}
                                 transition={{ repeat: Infinity, duration: 0.8 }}
                             />
@@ -87,32 +85,11 @@ const Hero = () => {
                         </p>
                     </motion.div>
 
-                    {/* Stats */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, delay: 0.6 }}
-                        className="grid grid-cols-3 gap-4 lg:gap-6"
-                    >
-                        <div className="text-center">
-                            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#FFD700]">$10K+</div>
-                            <div className="text-xs sm:text-sm text-gray-400">Extra Revenue</div>
-                        </div>
-                        <div className="text-center">
-                            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#FFD700]">20+ Hours</div>
-                            <div className="text-xs sm:text-sm text-gray-400">Saved Weekly</div>
-                        </div>
-                        <div className="text-center">
-                            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#FFD700]">500%</div>
-                            <div className="text-xs sm:text-sm text-gray-400">More Content</div>
-                        </div>
-                    </motion.div>
-
                     {/* CTA */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, delay: 0.8 }}
+                        transition={{ duration: 1, delay: 0.6 }}
                         className="space-y-4"
                     >
                         <Link href="/dashboard">
@@ -131,7 +108,7 @@ const Hero = () => {
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, delay: 1.0 }}
+                        transition={{ duration: 1, delay: 0.8 }}
                         className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4"
                     >
                         <div className="flex -space-x-2">
