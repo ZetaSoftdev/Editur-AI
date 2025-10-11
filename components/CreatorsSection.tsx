@@ -46,9 +46,7 @@ const CreatorsSection = () => {
         transition={{ duration: 1 }}
         className="text-lg sm:text-2xl lg:text-3xl font-bold mb-4"
       >
-        Here's the thing: <br />
-        <span className="text-white">these creators are making</span>
-        <span className="text-[#8B5CF6]"> serious money</span>
+        <span className="text-[#8B5CF6]">Make Serious Money</span>
       </motion.h2>
 
       {/* Subheading */}
