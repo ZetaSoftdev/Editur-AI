@@ -82,8 +82,8 @@ const ComparisonSection = () => {
           transition={{ duration: 1, delay: 0.6 }}
           className="relative"
         >
-          <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-500/30 h-full flex flex-col">
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gray-600 text-white px-6 py-2 rounded-full text-sm font-bold z-10">
+          <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-500/30 h-full flex flex-col relative">
+            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gray-600 text-white px-6 py-2 rounded-full text-sm font-bold z-20">
               ❌ OLD WAY
             </div>
             
@@ -96,7 +96,7 @@ const ComparisonSection = () => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
-                  className="flex items-start gap-4 p-4 bg-gray-800/50 rounded-lg border border-gray-500/20 hover:border-gray-500/40 transition-colors"
+                  className="flex items-center gap-4 p-4 bg-gray-800/50 rounded-lg border border-gray-500/20 hover:border-gray-500/40 transition-colors"
                 >
                   <span className="text-gray-400 text-2xl flex-shrink-0">✖</span>
                   <div className="flex-grow">
@@ -122,10 +122,10 @@ const ComparisonSection = () => {
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="relative"
+          className="relative z-10"
         >
-          <div className="bg-gradient-to-br from-[#8B5CF6]/20 to-[#7C3AED]/20 p-8 rounded-2xl shadow-2xl border-2 border-[#8B5CF6]/50 h-full flex flex-col relative overflow-hidden">
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] text-white px-6 py-2 rounded-full text-sm font-bold z-20">
+          <div className="bg-gradient-to-br from-[#8B5CF6]/20 to-[#7C3AED]/20 p-8 rounded-2xl shadow-2xl border-2 border-[#8B5CF6]/50 h-full flex flex-col relative overflow-visible">
+            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] text-white px-6 py-2 rounded-full text-sm font-bold z-30">
               ✨ NEW WAY
             </div>
             
@@ -141,7 +141,7 @@ const ComparisonSection = () => {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 1.0 + index * 0.1 }}
-                  className="flex items-start gap-4 p-4 bg-gray-800/30 rounded-lg border border-[#8B5CF6]/30 hover:border-[#8B5CF6]/60 hover:bg-[#8B5CF6]/10 transition-all duration-300 hover:scale-105"
+                  className="flex items-center gap-4 p-4 bg-gray-800/30 rounded-lg border border-[#8B5CF6]/30 hover:border-[#8B5CF6]/60 hover:bg-[#8B5CF6]/10 transition-all duration-300 hover:scale-105"
                 >
                   <span className="text-[#8B5CF6] text-2xl flex-shrink-0">✓</span>
                   <div className="flex-grow">
