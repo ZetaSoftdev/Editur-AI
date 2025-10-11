@@ -43,7 +43,7 @@ const Hero = () => {
     }, [text, isDeleting, wordIndex]);
 
     return (
-        <section className="relative min-h-screen text-white px-4 sm:px-6 py-8 sm:py-12">
+        <section className="relative min-h-screen text-white px-4 sm:px-6 py-8 sm:py-12 pb-0">
             {/* Two Column Layout */}
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                 

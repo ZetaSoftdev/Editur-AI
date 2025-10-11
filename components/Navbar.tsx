@@ -70,7 +70,7 @@ const Navbar = () => {
 
   return (
     <nav className="flex justify-center items-center w-full py-[1.7rem] mt-4 md:mt-2 sm:mt-4">
-      <div className="flex items-center justify-between w-[22rem] sm:w-[30rem] md:w-[56rem] max-w-[56rem] px-1 py-1 rounded-full bg-white shadow-lg">
+      <div className="flex items-center justify-between w-[22rem] sm:w-[30rem] md:w-[56rem] max-w-[56rem] px-1 py-1 rounded-full bg-white/90 shadow-lg backdrop-blur-sm">
         {/* Logo */}
         <Link href={"/"} className="flex items-center gap-2 pl-4">
           <Image 
