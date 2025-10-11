@@ -5,8 +5,8 @@ import Link from "next/link";
 
 const features = [
   "Making $1,000s/mo from shorts",
-  "Making more views, subscribers, etc",
-  "With little to no extra effort",
+  "Growing audiences faster",
+  "With minimal effort required",
 ];
 
 const testimonials = [
@@ -44,7 +44,7 @@ const CreatorsSection = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
-        className="text-3xl sm:text-6xl font-bold mb-4"
+        className="text-2xl sm:text-4xl lg:text-5xl font-bold mb-4"
       >
         Here's the thing: <br />
         <span className="text-[#FFD700]">these creators are making</span>
@@ -56,22 +56,22 @@ const CreatorsSection = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.2 }}
-        className="mt-4 text-xl sm:text-2xl text-gray-300 max-w-3xl mx-auto"
+        className="mt-4 text-lg sm:text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto"
       >
         While you're manually editing for hours, they're making <span className="text-[#FFD700] font-bold">$10K+/month</span> on autopilot
       </motion.p>
 
       {/* Features */}
-      <div className="flex flex-wrap justify-center gap-6 mt-8">
+      <div className="flex flex-wrap justify-center gap-3 sm:gap-6 mt-8">
         {features.map((feature, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: index * 0.2 }}
-            className="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-[#8B5CF6]/20 to-[#7C3AED]/20 border border-[#8B5CF6]/30 rounded-full text-base sm:text-lg text-gray-200 hover:scale-105 transition-transform duration-300"
+            className="flex items-center gap-2 sm:gap-3 px-3 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-[#8B5CF6]/20 to-[#7C3AED]/20 border border-[#8B5CF6]/30 rounded-full text-sm sm:text-base lg:text-lg text-gray-200 hover:scale-105 transition-transform duration-300"
           >
-            <span className="text-green-400 text-xl">✅</span> {feature}
+            <span className="text-green-400 text-lg sm:text-xl">✅</span> {feature}
           </motion.div>
         ))}
       </div>
