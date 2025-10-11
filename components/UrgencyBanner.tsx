@@ -28,7 +28,7 @@ const UrgencyBanner = () => {
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       exit={{ y: 100, opacity: 0 }}
-      className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] text-white p-4 shadow-2xl"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-black text-white p-4 shadow-2xl"
     >
       <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-4">

@@ -74,7 +74,7 @@ const ComparisonSection = () => {
       </motion.div>
 
       {/* Comparison Table */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-7xl mx-auto items-center">
         {/* Without EditurAI */}
         <motion.div 
           initial={{ opacity: 0, x: -30 }}
@@ -82,14 +82,14 @@ const ComparisonSection = () => {
           transition={{ duration: 1, delay: 0.6 }}
           className="relative"
         >
-          <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-500/30">
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gray-600 text-white px-6 py-2 rounded-full text-sm font-bold">
+          <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-500/30 h-full flex flex-col">
+            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gray-600 text-white px-6 py-2 rounded-full text-sm font-bold z-10">
               ❌ OLD WAY
             </div>
             
             <h3 className="text-2xl font-semibold text-gray-300 mb-6 mt-4">Without {branding.siteName}</h3>
             
-            <div className="space-y-4">
+            <div className="space-y-4 flex-grow">
               {beforeItems.map((item, index) => (
                 <motion.div 
                   key={index} 
@@ -124,8 +124,8 @@ const ComparisonSection = () => {
           transition={{ duration: 1, delay: 0.8 }}
           className="relative"
         >
-          <div className="bg-gradient-to-br from-[#8B5CF6]/20 to-[#7C3AED]/20 p-8 rounded-2xl shadow-2xl border-2 border-[#8B5CF6]/50 relative overflow-hidden">
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] text-white px-6 py-2 rounded-full text-sm font-bold">
+          <div className="bg-gradient-to-br from-[#8B5CF6]/20 to-[#7C3AED]/20 p-8 rounded-2xl shadow-2xl border-2 border-[#8B5CF6]/50 h-full flex flex-col relative overflow-hidden">
+            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] text-white px-6 py-2 rounded-full text-sm font-bold z-20">
               ✨ NEW WAY
             </div>
             
@@ -134,7 +134,7 @@ const ComparisonSection = () => {
             
             <h3 className="text-2xl font-semibold text-[#8B5CF6] mb-6 mt-4 relative z-10">With {branding.siteName}</h3>
             
-            <div className="space-y-4 relative z-10">
+            <div className="space-y-4 relative z-10 flex-grow">
               {afterItems.map((item, index) => (
                 <motion.div 
                   key={index} 

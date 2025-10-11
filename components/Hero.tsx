@@ -44,16 +44,6 @@ const Hero = () => {
 
     return (
         <section className="relative min-h-screen text-white px-4 sm:px-6 py-8 sm:py-12">
-            {/* Auto Badge */}
-            <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1 }}
-                className="flex justify-center mb-8 sm:mb-12"
-            >
-                <img src="/auto.svg" alt="Automatically with AI" className="h-6 sm:h-8" />
-            </motion.div>
-
             {/* Two Column Layout */}
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                 
@@ -64,9 +54,9 @@ const Hero = () => {
                         initial={{ opacity: 0, y: 40 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, delay: 0.2 }}
-                        className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight"
+                        className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight"
                     >
-                        <span className="text-[#FFD700]">Create Engaging Clips</span>
+                        <span className="text-[#FFD700] font-['Pacifico']" style={{fontFamily: 'Pacifico, cursive'}}>Create Engaging Clips</span>
                         <br />
                         <span className="text-white">From Your Videos</span>
                         <br />
