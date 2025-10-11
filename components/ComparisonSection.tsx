@@ -45,7 +45,7 @@ const ComparisonSection = () => {
         className="mt-4 text-xl text-gray-300 max-w-4xl mx-auto mb-12"
       >
         The old way costs you <span className="text-gray-400 font-bold">$4,000+/month</span> and <span className="text-gray-400 font-bold">80+ hours</span>. 
-        With <span className="text-[#8B5CF6] font-bold">{branding.siteName}</span>, get <span className="text-[#FFD700] font-bold">10x better results</span> for <span className="text-[#FFD700] font-bold">99% less cost</span>.
+        With <span className="text-[#8B5CF6] font-bold">{branding.siteName}</span>, get <span className="text-white font-bold">10x better results</span> for <span className="text-white font-bold">99% less cost</span>.
       </motion.p>
 
       {/* Cost Calculator */}
@@ -147,17 +147,17 @@ const ComparisonSection = () => {
                   <div className="flex-grow">
                     <p className="text-gray-200 text-sm mb-2">{item.text}</p>
                     <div className="flex justify-between text-xs">
-                      <span className="text-[#FFD700] font-semibold">{item.benefit}</span>
-                      <span className="text-green-400">{item.value}</span>
+                      <span className="text-[#8B5CF6] font-semibold">{item.benefit}</span>
+                      <span className="text-gray-300">{item.value}</span>
                     </div>
                   </div>
                 </motion.div>
               ))}
             </div>
             
-            <div className="mt-6 p-4 bg-gradient-to-r from-[#8B5CF6]/30 to-[#FFD700]/30 rounded-lg text-center relative z-10">
-              <div className="text-2xl font-bold text-[#FFD700]">Total: $19/month</div>
-              <div className="text-sm text-green-300">+ 2 hours saved weekly</div>
+            <div className="mt-6 p-4 bg-gradient-to-r from-[#8B5CF6]/30 to-[#7C3AED]/30 rounded-lg text-center relative z-10">
+              <div className="text-2xl font-bold text-white">Total: $19/month</div>
+              <div className="text-sm text-gray-300">+ 2 hours saved weekly</div>
               <div className="text-xs text-gray-300 mt-1">That's 99.5% savings!</div>
             </div>
           </div>
@@ -174,15 +174,15 @@ const ComparisonSection = () => {
         <h3 className="text-3xl font-bold text-[#8B5CF6] mb-6">📈 Your ROI in First Month</h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div className="text-center">
-            <div className="text-4xl font-bold text-[#FFD700]">$4,081</div>
+            <div className="text-4xl font-bold text-[#8B5CF6]">$4,081</div>
             <div className="text-sm text-gray-300">Money Saved</div>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-bold text-[#FFD700]">81 hrs</div>
+            <div className="text-4xl font-bold text-[#8B5CF6]">81 hrs</div>
             <div className="text-sm text-gray-300">Time Saved</div>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-bold text-[#FFD700]">21,474%</div>
+            <div className="text-4xl font-bold text-[#8B5CF6]">21,474%</div>
             <div className="text-sm text-gray-300">ROI</div>
           </div>
         </div>
@@ -209,10 +209,10 @@ const ComparisonSection = () => {
         className="mt-16 text-center"
       >
         <p className="text-xl text-gray-300 mb-6">
-          Stop throwing money away. <span className="text-[#FFD700] font-bold">Start your 3-month free trial</span> and see the difference.
+          Stop throwing money away. <span className="text-[#8B5CF6] font-bold">Start your 3-month free trial</span> and see the difference.
         </p>
         <Link href="/dashboard">
-          <button className="bg-gradient-to-r from-[#FFD700] to-[#F59E0B] hover:from-[#F59E0B] hover:to-[#D97706] text-black font-bold py-5 px-10 rounded-full text-xl shadow-2xl transform transition-all duration-300 hover:scale-105">
+          <button className="bg-white hover:bg-gray-100 text-[#8B5CF6] border-2 border-[#8B5CF6] font-bold py-5 px-10 rounded-full text-xl shadow-2xl transform transition-all duration-300 hover:scale-105">
             🔥 Save $49,200/Year - Start Free Trial
           </button>
         </Link>

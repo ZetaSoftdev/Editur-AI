@@ -76,7 +76,7 @@ const TestimonialsSlider = () => {
         transition={{ duration: 1 }}
         className="text-3xl sm:text-5xl font-bold mb-16"
       >
-        <span className="text-[#FFD700]">Real Creators,</span>{" "}
+        <span className="text-white">Real Creators,</span>{" "}
         <span className="text-[#8B5CF6]">Real Results</span>
       </motion.h2>
 
@@ -127,13 +127,13 @@ const TestimonialsSlider = () => {
             {/* Stats */}
             <div className="flex gap-6 text-center">
               <div>
-                <div className="text-2xl font-bold text-[#FFD700]">
+                <div className="text-2xl font-bold text-[#8B5CF6]">
                   {currentTestimonial.followers}
                 </div>
                 <div className="text-xs text-gray-400">Followers</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-[#FFD700]">
+                <div className="text-2xl font-bold text-[#8B5CF6]">
                   {currentTestimonial.revenue}
                 </div>
                 <div className="text-xs text-gray-400">Monthly Revenue</div>
@@ -143,7 +143,7 @@ const TestimonialsSlider = () => {
 
           {/* Star Rating */}
           <div className="flex justify-center mt-6">
-            <div className="flex text-[#FFD700] text-xl">
+            <div className="flex text-[#8B5CF6] text-xl">
               ⭐⭐⭐⭐⭐
             </div>
           </div>
@@ -172,19 +172,19 @@ const TestimonialsSlider = () => {
           className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-8"
         >
           <div className="text-center">
-            <div className="text-3xl font-bold text-[#FFD700]">99.2%</div>
+            <div className="text-3xl font-bold text-[#8B5CF6]">99.2%</div>
             <div className="text-gray-400 text-sm">Success Rate</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-[#FFD700]">3.2M+</div>
+            <div className="text-3xl font-bold text-[#8B5CF6]">3.2M+</div>
             <div className="text-gray-400 text-sm">Total Followers</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-[#FFD700]">$847K</div>
+            <div className="text-3xl font-bold text-[#8B5CF6]">$847K</div>
             <div className="text-gray-400 text-sm">Avg Monthly Revenue</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-[#FFD700]">72hrs</div>
+            <div className="text-3xl font-bold text-[#8B5CF6]">72hrs</div>
             <div className="text-gray-400 text-sm">To First Viral</div>
           </div>
         </motion.div>

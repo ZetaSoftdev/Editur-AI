@@ -47,7 +47,7 @@ const CreatorsSection = () => {
         className="text-lg sm:text-2xl lg:text-3xl font-bold mb-4"
       >
         Here's the thing: <br />
-        <span className="text-[#FFD700]">these creators are making</span>
+        <span className="text-white">these creators are making</span>
         <span className="text-[#8B5CF6]"> serious money</span>
       </motion.h2>
 
@@ -58,7 +58,7 @@ const CreatorsSection = () => {
         transition={{ duration: 1, delay: 0.2 }}
         className="mt-4 text-base sm:text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto"
       >
-        While you're manually editing for hours, they're making <span className="text-[#FFD700] font-bold">$10K+/month</span> on autopilot
+        While you're manually editing for hours, they're making <span className="text-[#8B5CF6] font-bold">$10K+/month</span> on autopilot
       </motion.p>
 
       {/* Features */}
@@ -91,7 +91,7 @@ const CreatorsSection = () => {
             transition={{ duration: 0.8, delay: 0.8 + index * 0.2 }}
             className="bg-gray-800/50 border border-[#8B5CF6]/30 rounded-xl p-6 hover:border-[#8B5CF6]/50 transition-all duration-300 hover:transform hover:scale-105 relative"
           >
-            <div className="flex text-[#FFD700] absolute top-4 right-4">
+            <div className="flex text-[#8B5CF6] absolute top-4 right-4">
               ⭐⭐⭐⭐⭐
             </div>
             
@@ -113,7 +113,7 @@ const CreatorsSection = () => {
             </div>
             
             <div className="mb-4">
-              <div className="text-2xl font-bold text-[#FFD700] mb-2">{testimonial.revenue}</div>
+              <div className="text-2xl font-bold text-[#8B5CF6] mb-2">{testimonial.revenue}</div>
             </div>
             
             <p className="text-gray-200 text-sm leading-relaxed italic">
@@ -131,19 +131,19 @@ const CreatorsSection = () => {
         className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-8 max-w-4xl mx-auto"
       >
         <div className="text-center">
-          <div className="text-3xl sm:text-4xl font-bold text-[#FFD700]">127K+</div>
+          <div className="text-3xl sm:text-4xl font-bold text-[#8B5CF6]">127K+</div>
           <div className="text-gray-400 text-sm mt-1">Happy Creators</div>
         </div>
         <div className="text-center">
-          <div className="text-3xl sm:text-4xl font-bold text-[#FFD700]">2.5M+</div>
+          <div className="text-3xl sm:text-4xl font-bold text-[#8B5CF6]">2.5M+</div>
           <div className="text-gray-400 text-sm mt-1">Videos Created</div>
         </div>
         <div className="text-center">
-          <div className="text-3xl sm:text-4xl font-bold text-[#FFD700]">$50M+</div>
+          <div className="text-3xl sm:text-4xl font-bold text-[#8B5CF6]">$50M+</div>
           <div className="text-gray-400 text-sm mt-1">Revenue Generated</div>
         </div>
         <div className="text-center">
-          <div className="text-3xl sm:text-4xl font-bold text-[#FFD700]">4.9★</div>
+          <div className="text-3xl sm:text-4xl font-bold text-[#8B5CF6]">4.9★</div>
           <div className="text-gray-400 text-sm mt-1">Average Rating</div>
         </div>
       </motion.div>
@@ -156,7 +156,7 @@ const CreatorsSection = () => {
         className="mt-12"
       >
         <Link href="/dashboard">
-          <button className="bg-gradient-to-r from-[#FFD700] to-[#F59E0B] hover:from-[#F59E0B] hover:to-[#D97706] text-black font-bold py-4 px-8 rounded-full text-lg transform transition-all duration-300 hover:scale-105 shadow-xl">
+          <button className="bg-white hover:bg-gray-100 text-[#8B5CF6] border-2 border-[#8B5CF6] font-bold py-4 px-8 rounded-full text-lg transform transition-all duration-300 hover:scale-105 shadow-xl">
             🚀 Join 127K+ Successful Creators
           </button>
         </Link>
